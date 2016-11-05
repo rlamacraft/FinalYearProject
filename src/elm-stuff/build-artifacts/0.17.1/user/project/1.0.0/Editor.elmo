@@ -1,0 +1,10 @@
+var _user$project$Editor$view = function (model) {
+	return _elm_lang$html$Html$text('Hello World');
+};
+var _user$project$Editor$update = F2(
+	function (msg, model) {
+		return model;
+	});
+var _user$project$Editor$init = {};
+var _user$project$Editor$Model = {};
+var _user$project$Editor$Reset = {ctor: 'Reset'};

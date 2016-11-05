@@ -16,7 +16,7 @@ function createWindow () {
   })
 
   // display the index.html file
-  mainWindow.loadURL(`file://${ __dirname }/index.html`)
+  mainWindow.loadURL(`file://${ __dirname }/editor.html`)
 
   // open dev tools by default so we can see any console errors
   mainWindow.webContents.openDevTools()
