@@ -1,0 +1,64 @@
+var _user$project$Editor$textOut = _elm_lang$core$Native_Platform.outgoingPort(
+	'textOut',
+	function (v) {
+		return v;
+	});
+var _user$project$Editor$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		if (_p0.ctor === 'SendTextOut') {
+			return {
+				ctor: '_Tuple2',
+				_0: model,
+				_1: _user$project$Editor$textOut('foo')
+			};
+		} else {
+			return {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Native_Utils.update(
+					model,
+					{text: _p0._0}),
+				_1: _elm_lang$core$Platform_Cmd$none
+			};
+		}
+	});
+var _user$project$Editor$textIn = _elm_lang$core$Native_Platform.incomingPort('textIn', _elm_lang$core$Json_Decode$string);
+var _user$project$Editor$Model = function (a) {
+	return {text: a};
+};
+var _user$project$Editor$init = {
+	ctor: '_Tuple2',
+	_0: _user$project$Editor$Model(''),
+	_1: _elm_lang$core$Platform_Cmd$none
+};
+var _user$project$Editor$GetTextBack = function (a) {
+	return {ctor: 'GetTextBack', _0: a};
+};
+var _user$project$Editor$subscriptions = function (model) {
+	return _user$project$Editor$textIn(_user$project$Editor$GetTextBack);
+};
+var _user$project$Editor$SendTextOut = {ctor: 'SendTextOut'};
+var _user$project$Editor$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$button,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Events$onClick(_user$project$Editor$SendTextOut)
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('Send Message!')
+					])),
+				_elm_lang$html$Html$text(model.text)
+			]));
+};
+var _user$project$Editor$main = {
+	main: _elm_lang$html$Html_App$program(
+		{init: _user$project$Editor$init, view: _user$project$Editor$view, update: _user$project$Editor$update, subscriptions: _user$project$Editor$subscriptions})
+};
