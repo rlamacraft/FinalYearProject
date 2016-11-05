@@ -33,11 +33,9 @@ var _user$project$ParsingHandling$buildStatementTree = function (parsedStatement
 		_elm_lang$core$Json_Decode$list(_user$project$ParsingHandling$statementDecoder),
 		parsedStatementsJson);
 	if (_p2.ctor === 'Err') {
-		return _elm_lang$core$Native_List.fromArray(
-			[
-				_user$project$ParsingHandling$StringStatement('error')
-			]);
+		return _elm_lang$core$Result$Err(
+			A2(_elm_lang$core$Basics_ops['++'], 'Could not decode JSON string from parser: ', _p2._0));
 	} else {
-		return _p2._0;
+		return _elm_lang$core$Result$Ok(_p2._0);
 	}
 };
