@@ -1,4 +1,4 @@
-module ParsingHandling exposing (Statement, buildStatementTree)
+module ParsingHandling exposing (..)
 {-
   Convert the parsed input text as a JSON string into the described data model
 -}

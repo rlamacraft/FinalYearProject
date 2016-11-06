@@ -1,7 +1,7 @@
 {
     "version": "1.0.0",
     "summary": "An electron-elm app for making presentation slides from a markup language.",
-    "repository": "https://github.com/rlamacraft/FinalYearProject.git",
+    "repository": "https://github.com/user/project.git",
     "license": "BSD3",
     "source-directories": [
         "src",
