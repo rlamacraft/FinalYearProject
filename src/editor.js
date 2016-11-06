@@ -1,6 +1,7 @@
 'use strict'
 const Elm = require('./editor_elm.js');
 const parser  = require('./parser.js');
+const {ipcRenderer} = require('electron');
 
 // get a reference to the div where we will show our UI
 let container = document.getElementById('container');
@@ -11,9 +12,11 @@ let app = Elm.Editor.embed(container);
 
 app.ports.parseText.subscribe(function(text) {
   try {
-    let parsedData = parser.parse(text);
+    const parsedData = parser.parse(text);
     console.log(parsedData);
-    app.ports.parsedData.send(JSON.stringify(parsedData));
+    const JsonParsedData = JSON.stringify(parsedData)
+    app.ports.parsedData.send(JsonParsedData);
+    ipcRenderer.send('show-pres', JsonParsedData);
   } catch(ex) {
     console.error(ex);
   }

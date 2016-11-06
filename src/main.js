@@ -1,30 +1,43 @@
 'use strict'
 const electron = require('electron')
+const {ipcMain} = require('electron');
 
-const app = electron.app // this is our app
-const BrowserWindow = electron.BrowserWindow // This is a Module that creates windows
+const app = electron.app; // this is our app
+const BrowserWindow = electron.BrowserWindow; // This is a Module that creates windows
 
-let mainWindow // saves a global reference to mainWindow so it doesn't get garbage collected
+let mainWindow; // saves a global reference to mainWindow so it doesn't get garbage collected
+let presWindow; // this is the presentation window
 
-app.on('ready', createWindow) // called when electron has initialized
+app.on('ready', _ => {
+  mainWindow = createWindow("editor", true);
+  presWindow = createWindow("presenter", false);
+}) // called when electron has initialized
 
 // This will create our app window, no surprise there
-function createWindow () {
-  mainWindow = new BrowserWindow({
+function createWindow (htmlFilename, visible) {
+  const newWindow = new BrowserWindow({
     width: 1024,
-    height: 768
+    height: 768,
+    show: visible
   })
 
   // display the index.html file
-  mainWindow.loadURL(`file://${ __dirname }/editor.html`)
+  newWindow.loadURL(`file://${ __dirname }/${ htmlFilename }.html`)
 
   // open dev tools by default so we can see any console errors
-  mainWindow.webContents.openDevTools()
+  newWindow.webContents.openDevTools()
 
-  mainWindow.on('closed', function () {
+  newWindow.on('closed', function () {
     mainWindow = null
-  })
+  });
+
+  return newWindow;
 }
+
+ipcMain.on('show-pres', function(event, message){
+  presWindow.show();
+  presWindow.webContents.send("show-pres", message);
+});
 
 /* Mac Specific things */
 
