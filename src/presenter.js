@@ -1,14 +1,17 @@
 'use strict'
 const Elm = require('./presenter_elm.js');
+const parser  = require('./parser.js');
 const {ipcRenderer} = require('electron');
 
-// get a reference to the div where we will show our UI
 let container = document.getElementById('container');
-
-// start the elm app in the container
-// and keep a reference for communicating with the app
 let app = Elm.Presenter.embed(container);
 
 ipcRenderer.on("show-pres", (event, message) => {
-  app.ports.parsedData.send(message);
+  try {
+    const parsedData = parser.parse(message);
+    console.log(parsedData);
+    app.ports.parsedData.send(JSON.stringify(parsedData));
+  } catch(ex) {
+    console.error(ex);
+  }
 })
