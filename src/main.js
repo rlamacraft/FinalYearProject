@@ -9,21 +9,17 @@ let mainWindow; // saves a global reference to mainWindow so it doesn't get garb
 let presWindow; // this is the presentation window
 
 app.on('ready', _ => {
-  mainWindow = createWindow("editor", {
-    width: 300,
-    height: 600,
-    show: true
-  });
-  presWindow = createWindow("presenter", {
-    width: 900,
-    height: 300,
-    show: false
-  });
+  mainWindow = createWindow("editor", true);
+  presWindow = createWindow("presenter", false);
 }) // called when electron has initialized
 
 // This will create our app window, no surprise there
-function createWindow (htmlFilename, options) {
-  const newWindow = new BrowserWindow(options)
+function createWindow (htmlFilename, visible) {
+  const newWindow = new BrowserWindow({
+    width: 1024,
+    height: 768,
+    show: visible
+  })
 
   // display the index.html file
   newWindow.loadURL(`file://${ __dirname }/${ htmlFilename }.html`)
