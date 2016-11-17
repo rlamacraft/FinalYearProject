@@ -1,0 +1,40 @@
+html, body
+  margin: 0
+  height: 100%
+  width: 100%
+  font-size: 12px
+
+.container
+  display: flex
+  flex-direction: column
+  position: relative
+  height: 100%
+
+  .controls
+    flex-grow: 0
+    background-color: #eaeaea
+    padding: 3px
+
+    button
+      font-size: 1em
+      margin: 5px
+      text-transform: capitalize
+      padding: 3px 10px
+
+    button + button
+      margin-left: 0
+
+    button.btnPresent
+      float: right
+
+  textarea
+    box-sizing: border-box
+    flex-grow: 1
+    overflow: scroll
+    resize: none
+    border: none
+    border-left: 8px #eaeaea solid
+    font-size: 1em
+    outline: none
+    height: 100%
+    width: 100%

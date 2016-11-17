@@ -3,9 +3,11 @@ port module Editor exposing (..)
 import Html exposing (..)
 import Html.App as App
 import Html.Events exposing (onClick, onInput)
+import Html.Attributes exposing (..)
 
 import ParsingHandling exposing (Statement, buildStatementTree)
 
+main : Program Never
 main =
   App.program
     { init = init
@@ -57,8 +59,12 @@ subscriptions model =
 -- VIEW
 view : Model -> Html Msg
 view model =
-  div []
-    [ textarea  [ onInput EditText] []
-    , button [ onClick ParseText ] [ text "Parse" ]
-    , text (toString model.data)
+  div [ class "container" ]
+    [ div [ class "controls" ]
+      [ button [] [text "new"]
+      , button [] [text "open"]
+      , button [] [text "save"]
+      , button [ onClick ParseText, class "btnPresent"] [text "present"]
+      ]
+    , textarea [ onInput EditText ] []
     ]
