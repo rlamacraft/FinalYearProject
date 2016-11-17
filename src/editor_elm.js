@@ -8690,11 +8690,16 @@ var _user$project$Editor$parseText = _elm_lang$core$Native_Platform.outgoingPort
 	function (v) {
 		return v;
 	});
+var _user$project$Editor$requestFile = _elm_lang$core$Native_Platform.outgoingPort(
+	'requestFile',
+	function (v) {
+		return null;
+	});
 var _user$project$Editor$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
 		switch (_p0.ctor) {
-			case 'EditText':
+			case 'UpdateInputText':
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
@@ -8709,24 +8714,16 @@ var _user$project$Editor$update = F2(
 					_1: _user$project$Editor$parseText(model.text)
 				};
 			default:
-				var _p1 = _user$project$ParsingHandling$buildStatementTree(_p0._0);
-				if (_p1.ctor === 'Err') {
-					return A2(
-						_elm_lang$core$Debug$log,
-						_p1._0,
-						{ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none});
-				} else {
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							model,
-							{data: _p1._0}),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-				}
+				return {
+					ctor: '_Tuple2',
+					_0: model,
+					_1: _user$project$Editor$requestFile(
+						{ctor: '_Tuple0'})
+				};
 		}
 	});
 var _user$project$Editor$parsedData = _elm_lang$core$Native_Platform.incomingPort('parsedData', _elm_lang$core$Json_Decode$string);
+var _user$project$Editor$fileData = _elm_lang$core$Native_Platform.incomingPort('fileData', _elm_lang$core$Json_Decode$string);
 var _user$project$Editor$Model = F2(
 	function (a, b) {
 		return {data: a, text: b};
@@ -8740,14 +8737,12 @@ var _user$project$Editor$init = {
 		''),
 	_1: _elm_lang$core$Platform_Cmd$none
 };
-var _user$project$Editor$EditText = function (a) {
-	return {ctor: 'EditText', _0: a};
-};
-var _user$project$Editor$Received = function (a) {
-	return {ctor: 'Received', _0: a};
+var _user$project$Editor$OpenFile = {ctor: 'OpenFile'};
+var _user$project$Editor$UpdateInputText = function (a) {
+	return {ctor: 'UpdateInputText', _0: a};
 };
 var _user$project$Editor$subscriptions = function (model) {
-	return _user$project$Editor$parsedData(_user$project$Editor$Received);
+	return _user$project$Editor$fileData(_user$project$Editor$UpdateInputText);
 };
 var _user$project$Editor$ParseText = {ctor: 'ParseText'};
 var _user$project$Editor$view = function (model) {
@@ -8778,7 +8773,9 @@ var _user$project$Editor$view = function (model) {
 						A2(
 						_elm_lang$html$Html$button,
 						_elm_lang$core$Native_List.fromArray(
-							[]),
+							[
+								_elm_lang$html$Html_Events$onClick(_user$project$Editor$OpenFile)
+							]),
 						_elm_lang$core$Native_List.fromArray(
 							[
 								_elm_lang$html$Html$text('open')
@@ -8807,7 +8804,8 @@ var _user$project$Editor$view = function (model) {
 				_elm_lang$html$Html$textarea,
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html_Events$onInput(_user$project$Editor$EditText)
+						_elm_lang$html$Html_Events$onInput(_user$project$Editor$UpdateInputText),
+						_elm_lang$html$Html_Attributes$value(model.text)
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[]))
