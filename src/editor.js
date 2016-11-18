@@ -31,6 +31,10 @@ app.ports.requestFile.subscribe(function() {
   });
 });
 
+app.ports.createWindow.subscribe(function() {
+  ipcRenderer.send('new-window');
+})
+
 // as part of an Editor window init, an index will be generated for associating its presentation window
 ipcRenderer.once("window-pair-index", (event, newWindowIndex) => {
   windowIndex = newWindowIndex;

@@ -8695,6 +8695,11 @@ var _user$project$Editor$requestFile = _elm_lang$core$Native_Platform.outgoingPo
 	function (v) {
 		return null;
 	});
+var _user$project$Editor$createWindow = _elm_lang$core$Native_Platform.outgoingPort(
+	'createWindow',
+	function (v) {
+		return null;
+	});
 var _user$project$Editor$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
@@ -8713,11 +8718,18 @@ var _user$project$Editor$update = F2(
 					_0: model,
 					_1: _user$project$Editor$parseText(model.text)
 				};
-			default:
+			case 'OpenFile':
 				return {
 					ctor: '_Tuple2',
 					_0: model,
 					_1: _user$project$Editor$requestFile(
+						{ctor: '_Tuple0'})
+				};
+			default:
+				return {
+					ctor: '_Tuple2',
+					_0: model,
+					_1: _user$project$Editor$createWindow(
 						{ctor: '_Tuple0'})
 				};
 		}
@@ -8737,6 +8749,7 @@ var _user$project$Editor$init = {
 		''),
 	_1: _elm_lang$core$Platform_Cmd$none
 };
+var _user$project$Editor$NewWindow = {ctor: 'NewWindow'};
 var _user$project$Editor$OpenFile = {ctor: 'OpenFile'};
 var _user$project$Editor$UpdateInputText = function (a) {
 	return {ctor: 'UpdateInputText', _0: a};
@@ -8765,7 +8778,9 @@ var _user$project$Editor$view = function (model) {
 						A2(
 						_elm_lang$html$Html$button,
 						_elm_lang$core$Native_List.fromArray(
-							[]),
+							[
+								_elm_lang$html$Html_Events$onClick(_user$project$Editor$NewWindow)
+							]),
 						_elm_lang$core$Native_List.fromArray(
 							[
 								_elm_lang$html$Html$text('new')

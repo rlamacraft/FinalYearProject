@@ -66,6 +66,10 @@ ipcMain.on('show-pres', (event, windowIndex, message) => {
   }
 });
 
+ipcMain.on('new-window', () => {
+  createEditorWindow();
+})
+
 /* Mac Specific things */
 
 // when you close all the windows on a non-mac OS it quits the app

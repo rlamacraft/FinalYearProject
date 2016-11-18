@@ -27,7 +27,7 @@ init =
   (Model [] "", Cmd.none)
 
 -- UPDATE
-type Msg = ParseText | UpdateInputText String | OpenFile
+type Msg = ParseText | UpdateInputText String | OpenFile | NewWindow
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -38,10 +38,13 @@ update msg model =
       ( model, parseText model.text )
     OpenFile ->
       ( model, requestFile () )
+    NewWindow ->
+      ( model, createWindow () )
 
 -- PORTS
 port parseText : String -> Cmd msg
 port requestFile : () -> Cmd msg
+port createWindow: () -> Cmd msg
 
 port parsedData : (String -> msg) -> Sub msg
 port fileData : (String -> msg) -> Sub msg
@@ -55,7 +58,7 @@ view : Model -> Html Msg
 view model =
   div [ class "container" ]
     [ div [ class "controls" ]
-      [ button [] [text "new"]
+      [ button [ onClick NewWindow ] [text "new"]
       , button [ onClick OpenFile ] [text "open"]
       , button [] [text "save"]
       , button [ onClick ParseText, class "btnPresent"] [text "present"]
