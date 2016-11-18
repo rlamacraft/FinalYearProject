@@ -6,9 +6,10 @@ const {dialog} = require('electron').remote;
 
 let container = document.getElementById('container');
 let app = Elm.Editor.embed(container);
+let windowIndex;
 
 app.ports.parseText.subscribe(function(text) {
-  ipcRenderer.send('show-pres', text);
+  ipcRenderer.send('show-pres', windowIndex, text);
 });
 
 app.ports.requestFile.subscribe(function() {
@@ -28,4 +29,9 @@ app.ports.requestFile.subscribe(function() {
       });
     }
   });
+});
+
+// as part of an Editor window init, an index will be generated for associating its presentation window
+ipcRenderer.once("window-pair-index", (event, newWindowIndex) => {
+  windowIndex = newWindowIndex;
 });
