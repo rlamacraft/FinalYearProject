@@ -7,6 +7,7 @@ const {dialog} = require('electron').remote;
 let container = document.getElementById('container');
 let app = Elm.Editor.embed(container);
 let windowIndex;
+let currentFile;
 
 app.ports.parseText.subscribe(function(text) {
   ipcRenderer.send('show-pres', windowIndex, text);
@@ -24,7 +25,8 @@ app.ports.requestFile.subscribe(function() {
     if(filenames.length > 1) {
       alert("Can only load one file!")
     } else {
-      fs.readFile(filenames[0], function(err, data) {
+      currentFile = filenames[0];
+      fs.readFile(currentFile, function(err, data) {
         app.ports.fileData.send(data.toString());
       });
     }
@@ -33,7 +35,11 @@ app.ports.requestFile.subscribe(function() {
 
 app.ports.createWindow.subscribe(function() {
   ipcRenderer.send('new-window');
-})
+});
+
+app.ports.writeToFile.subscribe(function(text) {
+  fs.writeFile(currentFile, text);
+});
 
 // as part of an Editor window init, an index will be generated for associating its presentation window
 ipcRenderer.once("window-pair-index", (event, newWindowIndex) => {
