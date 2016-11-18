@@ -8745,8 +8745,15 @@ var _user$project$Editor$update = F2(
 				};
 		}
 	});
-var _user$project$Editor$parsedData = _elm_lang$core$Native_Platform.incomingPort('parsedData', _elm_lang$core$Json_Decode$string);
 var _user$project$Editor$fileData = _elm_lang$core$Native_Platform.incomingPort('fileData', _elm_lang$core$Json_Decode$string);
+var _user$project$Editor$present = _elm_lang$core$Native_Platform.incomingPort(
+	'present',
+	_elm_lang$core$Json_Decode$null(
+		{ctor: '_Tuple0'}));
+var _user$project$Editor$saveFile = _elm_lang$core$Native_Platform.incomingPort(
+	'saveFile',
+	_elm_lang$core$Json_Decode$null(
+		{ctor: '_Tuple0'}));
 var _user$project$Editor$Model = F2(
 	function (a, b) {
 		return {data: a, text: b};
@@ -8763,13 +8770,27 @@ var _user$project$Editor$init = {
 var _user$project$Editor$SaveFile = {ctor: 'SaveFile'};
 var _user$project$Editor$NewWindow = {ctor: 'NewWindow'};
 var _user$project$Editor$OpenFile = {ctor: 'OpenFile'};
+var _user$project$Editor$ParseText = {ctor: 'ParseText'};
 var _user$project$Editor$UpdateInputText = function (a) {
 	return {ctor: 'UpdateInputText', _0: a};
 };
 var _user$project$Editor$subscriptions = function (model) {
-	return _user$project$Editor$fileData(_user$project$Editor$UpdateInputText);
+	var saveFileFunc = function (_p1) {
+		var _p2 = _p1;
+		return _user$project$Editor$SaveFile;
+	};
+	var parseTextFunc = function (_p3) {
+		var _p4 = _p3;
+		return _user$project$Editor$ParseText;
+	};
+	return _elm_lang$core$Platform_Sub$batch(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_user$project$Editor$fileData(_user$project$Editor$UpdateInputText),
+				_user$project$Editor$present(parseTextFunc),
+				_user$project$Editor$saveFile(saveFileFunc)
+			]));
 };
-var _user$project$Editor$ParseText = {ctor: 'ParseText'};
 var _user$project$Editor$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,

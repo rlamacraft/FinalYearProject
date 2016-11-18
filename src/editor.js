@@ -13,7 +13,7 @@ app.ports.parseText.subscribe(function(text) {
   ipcRenderer.send('show-pres', windowIndex, text);
 });
 
-app.ports.requestFile.subscribe(function() {
+function openFile() {
   const dialogOptions = {
     title: "Load Input File",
     properties: ['openFile']
@@ -31,17 +31,37 @@ app.ports.requestFile.subscribe(function() {
       });
     }
   });
+}
+
+app.ports.requestFile.subscribe(function() {
+  openFile();
 });
 
 app.ports.createWindow.subscribe(function() {
   ipcRenderer.send('new-window');
 });
 
-app.ports.writeToFile.subscribe(function(text) {
+function saveFile(text) {
   fs.writeFile(currentFile, text);
+}
+
+app.ports.writeToFile.subscribe(function(text) {
+  saveFile(text);
 });
 
 // as part of an Editor window init, an index will be generated for associating its presentation window
 ipcRenderer.once("window-pair-index", (event, newWindowIndex) => {
   windowIndex = newWindowIndex;
+});
+
+ipcRenderer.on("present", _ => {
+  app.ports.present.send(null);
+});
+
+ipcRenderer.on("open", _ => {
+  openFile();
+});
+
+ipcRenderer.on("save", _ => {
+  app.ports.saveFile.send(null);
 });

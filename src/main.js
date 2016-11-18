@@ -2,7 +2,7 @@
 const electron = require('electron')
 const {ipcMain} = require('electron');
 
-const app = electron.app; // this is our app
+const {app, Menu} = require('electron')
 const BrowserWindow = electron.BrowserWindow; // This is a Module that creates windows
 
 // all created presenter windows, object so that windows can be efficiently closed and reopened.
@@ -40,8 +40,125 @@ const createPresenterWindow = (windowsIndex, content) => {
   return newPresenterWindow
 }
 
+function setApplicationMenu() {
+  let menuTemplate = [
+    {
+      label: 'File',
+      submenu: [
+        {
+          label: "New",
+          accelerator: 'Command+N',
+          click: _ => { createEditorWindow(); }
+        },
+        {
+          label: "Open..." ,
+          accelerator: 'Command+O',
+          click: _ => { BrowserWindow.getFocusedWindow().webContents.send("open"); }
+        },
+        {
+          label: "Save",
+          accelerator: 'Command+S',
+          click: _ => { BrowserWindow.getFocusedWindow().webContents.send("save"); }
+        },
+      ]
+    },
+    {
+      label: "Edit",
+      submenu: [
+        {
+          label: 'Undo',
+          accelerator: 'Command+Z',
+          selector: 'undo:'
+        },
+        {
+          label: 'Redo',
+          accelerator: 'Shift+Command+Z',
+          selector: 'redo:'
+        },
+        {
+          type: 'separator'
+        },
+        {
+          label: 'Cut',
+          accelerator: 'Command+X',
+          selector: 'cut:'
+        },
+        {
+          label: 'Copy',
+          accelerator: 'Command+C',
+          selector: 'copy:'
+        },
+        {
+          label: 'Paste',
+          accelerator: 'Command+V',
+          selector: 'paste:'
+        },
+        {
+          label: 'Select All',
+          accelerator: 'Command+A',
+          selector: 'selectAll:'
+        }
+      ]
+    },
+    {
+      label: "View",
+      submenu: [
+        {
+          label: "Present",
+          accelerator: "Command+P",
+          click: _ => { BrowserWindow.getFocusedWindow().webContents.send("present"); }
+        },
+        {
+          label: "Dev Tools",
+          accelerator: "Command+Alt+J",
+          click: _ => { BrowserWindow.getFocusedWindow().webContents.openDevTools(); }
+        }
+      ]
+    }
+  ];
+  const macOSMenu = {
+    label: app.getName(),
+    submenu: [
+      { role: 'about' },
+      { type: 'separator' },
+      { role: 'services', submenu: [] },
+      { type: 'separator' },
+      { role: 'hide' },
+      { role: 'hideothers' },
+      { role: 'unhide' },
+      { type: 'separator' },
+      { role: 'quit' }
+    ]
+  };
+  if(process.platform === 'darwin') {
+    menuTemplate.unshift(macOSMenu);
+    menuTemplate.push({label: "Window", submenu: [
+      {
+        label: 'Minimize',
+        accelerator: 'Command+M',
+        selector: 'performMiniaturize:'
+      },
+      {
+        label: 'Close',
+        accelerator: 'Command+W',
+        selector: 'performClose:'
+      },
+      {
+        type: 'separator'
+      },
+      {
+        label: 'Bring All to Front',
+        selector: 'arrangeInFront:'
+      }
+    ]});
+  }
+  Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate));
+  app.setName("Markup Presenter");
+}
+
 // Called when electron has initialized
 app.on('ready', _ => {
+  setApplicationMenu();
   createEditorWindow();
 });
 
@@ -75,9 +192,9 @@ ipcMain.on('new-window', () => {
 // when you close all the windows on a non-mac OS it quits the app
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') { app.quit() }
-})
+});
 
 // if there is no mainWindow it creates one (like when you click the dock icon)
 app.on('activate', () => {
   if (mainWindow === null) { createEditorWindow() }
-})
+});
