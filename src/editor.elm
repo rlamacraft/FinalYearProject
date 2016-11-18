@@ -23,8 +23,8 @@ type alias Model =
   , text : String }
 
 init : (Model, Cmd Msg)
-init =
-  (Model [] "", Cmd.none)
+init = (Model [] "", Cmd.none)
+
 
 -- UPDATE
 type Msg = ParseText | UpdateInputText String | OpenFile | NewWindow | SaveFile
@@ -43,28 +43,29 @@ update msg model =
     SaveFile ->
       ( model, writeToFile model.text )
 
--- PORTS
-port parseText : String -> Cmd msg
-port requestFile : () -> Cmd msg
-port createWindow: () -> Cmd msg
-port writeToFile: String -> Cmd msg
 
-port parsedData : (String -> msg) -> Sub msg
-port fileData : (String -> msg) -> Sub msg
+-- PORTS
+port parseText    : String  -> Cmd msg -- Parser and generate the presentation
+port requestFile  : ()      -> Cmd msg -- Open file via system dialog
+port createWindow : ()      -> Cmd msg -- Create new blank window
+port writeToFile  : String  -> Cmd msg -- Save file according to path from previous OpenFile
+
+port fileData   : (String -> msg) -> Sub msg -- Data loaded from file
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
   fileData UpdateInputText
+
 
 -- VIEW
 view : Model -> Html Msg
 view model =
   div [ class "container" ]
     [ div [ class "controls" ]
-      [ button [ onClick NewWindow ] [text "new"  ]
-      , button [ onClick OpenFile  ] [text "open" ]
-      , button [ onClick SaveFile  ] [text "save" ]
-      , button [ onClick ParseText, class "btnPresent"] [text "present"]
+      [ button [ onClick NewWindow ] [ text "new"  ]
+      , button [ onClick OpenFile  ] [ text "open" ]
+      , button [ onClick SaveFile  ] [ text "save" ]
+      , button [ onClick ParseText, class "btnPresent" ] [ text "present" ]
       ]
     , textarea [ onInput UpdateInputText, value model.text ] []
     ]
