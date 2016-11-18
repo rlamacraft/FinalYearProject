@@ -194,7 +194,14 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') { app.quit() }
 });
 
-// if there is no mainWindow it creates one (like when you click the dock icon)
+// when you click the dock icon, find the first valid editor window, else create one
 app.on('activate', () => {
-  if (mainWindow === null) { createEditorWindow() }
+  const allEditorWindows = Object.keys(windows.editorWindows)
+    .map(key => windows.editorWindows[key])
+    .filter(window => !window.isDestroyed());
+  if(allEditorWindows.length === 0) {
+    createEditorWindow();
+  } else {
+    allEditorWindows[0].show();
+  }
 });
