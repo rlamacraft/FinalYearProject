@@ -52,7 +52,7 @@ port writeToFile  : String  -> Cmd msg -- Save file according to path from previ
 
 port fileData       : (String -> msg) -> Sub msg -- Data loaded from file
 port present        : (() -> msg) -> Sub msg     -- Request for presenting from App Menu
-port saveFile           : (() -> msg) -> Sub msg     -- Request for saving from App Menu
+port saveFile       : (() -> msg) -> Sub msg     -- Request for saving from App Menu
 subscriptions : Model -> Sub Msg
 subscriptions model =
   let
