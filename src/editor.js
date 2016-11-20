@@ -7,7 +7,7 @@ const {dialog} = require('electron').remote;
 let container = document.getElementById('container');
 let app = Elm.Editor.embed(container);
 let windowIndex;
-let currentFile;
+let currentFile = "";
 
 app.ports.parseText.subscribe(function(text) {
   ipcRenderer.send('show-pres', windowIndex, text);
@@ -41,8 +41,20 @@ app.ports.createWindow.subscribe(function() {
   ipcRenderer.send('new-window');
 });
 
+/*
+* Saves the file, if currentFile has not be set because I file has not be opened (this is a new document)
+* then request a path from the user. An subsequent saves will be to that new file.
+*/
 function saveFile(text) {
-  fs.writeFile(currentFile, text);
+  if(currentFile === "") {
+    dialog.showSaveDialog({}, path => {
+      currentFile = path;
+      fs.writeFile(currentFile, text);
+    });
+  } else {
+    fs.writeFile(currentFile, text);
+  }
+
 }
 
 app.ports.writeToFile.subscribe(function(text) {
