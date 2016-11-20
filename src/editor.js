@@ -13,20 +13,24 @@ app.ports.parseText.subscribe(function(text) {
   ipcRenderer.send('show-pres', windowIndex, text);
 });
 
+/*
+* Open a file and load its contents into the Editor Elm app.
+* Also saves the path of the loaded file for subsequent saving.
+*/
 function openFile() {
   const dialogOptions = {
     title: "Load Input File",
     properties: ['openFile']
   };
 
-  dialog.showOpenDialog(dialogOptions, function(filenames) {
+  dialog.showOpenDialog(dialogOptions, filenames => {
     if(typeof(filenames) === "undefined")
       return;
     if(filenames.length > 1) {
       alert("Can only load one file!")
     } else {
       currentFile = filenames[0];
-      fs.readFile(currentFile, function(err, data) {
+      fs.readFile(currentFile, (err, data) => {
         app.ports.fileData.send(data.toString());
       });
     }
