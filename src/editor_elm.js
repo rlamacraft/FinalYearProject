@@ -8685,6 +8685,18 @@ var _user$project$ParsingHandling$buildStatementTree = function (parsedStatement
 	}
 };
 
+var _user$project$Editor$materialIcon = function (name) {
+	return A2(
+		_elm_lang$html$Html$i,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('material-icons')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text(name)
+			]));
+};
 var _user$project$Editor$parseText = _elm_lang$core$Native_Platform.outgoingPort(
 	'parseText',
 	function (v) {
@@ -8816,7 +8828,7 @@ var _user$project$Editor$view = function (model) {
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html$text('new')
+								_user$project$Editor$materialIcon('add_to_photos')
 							])),
 						A2(
 						_elm_lang$html$Html$button,
@@ -8826,7 +8838,7 @@ var _user$project$Editor$view = function (model) {
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html$text('open')
+								_user$project$Editor$materialIcon('folder_open')
 							])),
 						A2(
 						_elm_lang$html$Html$button,
@@ -8836,7 +8848,7 @@ var _user$project$Editor$view = function (model) {
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html$text('save')
+								_user$project$Editor$materialIcon('save')
 							])),
 						A2(
 						_elm_lang$html$Html$button,
@@ -8847,7 +8859,7 @@ var _user$project$Editor$view = function (model) {
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html$text('present')
+								_user$project$Editor$materialIcon('ondemand_video')
 							]))
 					])),
 				A2(

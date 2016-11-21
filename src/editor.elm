@@ -67,14 +67,18 @@ subscriptions model =
 
 
 -- VIEW
+materialIcon : String -> Html Msg
+materialIcon name =
+  i [ class "material-icons" ] [ text name ]
+
 view : Model -> Html Msg
 view model =
   div [ class "container" ]
     [ div [ class "controls" ]
-      [ button [ onClick NewWindow ] [ text "new"  ]
-      , button [ onClick OpenFile  ] [ text "open" ]
-      , button [ onClick SaveFile  ] [ text "save" ]
-      , button [ onClick ParseText, class "btnPresent" ] [ text "present" ]
+      [ button [ onClick NewWindow ] [ materialIcon "add_to_photos" ]
+      , button [ onClick OpenFile  ] [ materialIcon "folder_open" ]
+      , button [ onClick SaveFile  ] [ materialIcon "save" ]
+      , button [ onClick ParseText, class "btnPresent" ] [ materialIcon "ondemand_video" ]
       ]
     , textarea [ onInput UpdateInputText, value model.text ] []
     ]

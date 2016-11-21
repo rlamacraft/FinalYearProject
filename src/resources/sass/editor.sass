@@ -13,19 +13,29 @@ html, body
   .controls
     flex-grow: 0
     background-color: #eaeaea
-    padding: 3px
+    padding: 2px
+    position: relative
+    height: 40px
 
     button
-      font-size: 1em
-      margin: 5px
-      text-transform: capitalize
-      padding: 3px 10px
+      font-size: 2.5em
+      margin: 3px 3px
+      cursor: pointer
+      background-color: rgb(100,100,100)
+      padding: 7px 10px
+      border-radius: 5%
+      color: #fafafa
+      box-shadow: 1px 2px 2px rgba(100,100,100,0.3)
+      position: relative
+      z-index: 1
+      border: none
 
-    button + button
-      margin-left: 0
+      i.material-icons
+        font-size: inherit
 
-    button.btnPresent
+    .btnPresent
       float: right
+      font-size: 3em
 
   textarea
     box-sizing: border-box
@@ -33,9 +43,10 @@ html, body
     overflow: scroll
     resize: none
     border: none
-    border-left: 8px #eaeaea solid
+    border-left: 10px #eaeaea solid
     font-size: 1em
     outline: none
-    height: 100%
+    height: calc(100% + 20px)
     width: 100%
-    padding: 4px 8px
+    padding: 12px 3px 10px 10px
+    position: relative
