@@ -1,6 +1,6 @@
-<script src="Component_Lib.js"></script>
+<script src="../WebComponentsLibrarySpecV0.js"></script>
 
-<template id="template">
+<template id="title_template">
   <style>
   :host {
     position: absolute;
@@ -28,10 +28,5 @@
 </template>
 
 <script>
-  var myTitleProto = Object.create(HTMLElement.prototype);
-  myTitleProto.createdCallback = function() {
-    const template = document.getElementById("title_import").import.getElementById("template");
-    attachShadowDOM(this, template);
-  };
-  document.registerElement('pres-title', {prototype: myTitleProto});
+  RegisterComponent("title", {});
 </script>
