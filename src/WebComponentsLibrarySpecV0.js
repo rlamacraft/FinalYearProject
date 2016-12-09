@@ -12,6 +12,22 @@
 * as well as provide a getter for the template.
 */
 const RegisterComponent = function(commandName, functions) {
+
+  const setMutationObserver = function(target) {
+    // create an observer instance
+    this.observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        functions.onContentChange(mutation.target);
+      });
+    });
+
+    // configuration of the observer:
+    var config = { attributes: true, childList: true, characterData: true };
+
+    // pass in the target node, as well as the observer options
+    this.observer.observe(target, config);
+  }
+
   const proto = Object.create(HTMLElement.prototype);
 
   proto.createdCallback = function() {
@@ -19,10 +35,12 @@ const RegisterComponent = function(commandName, functions) {
     const root = this.createShadowRoot();
     const clone = document.importNode(template.content, true);
     root.appendChild(clone);
-    if(typeof(functions.onCreated) != "undefined") {
-      functions.onCreated(this);
-    }
     correctSlot(root);
+    setMutationObserver(this);
+  }
+
+  proto.detachedCallback = function() {
+    this.observer.disconnect();
   }
 
   document.registerElement(`pres-${commandName}`, {

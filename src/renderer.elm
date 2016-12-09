@@ -8,17 +8,13 @@ import List exposing(map)
 
 renderCommand : String -> (List Statement) -> String -> Html Msg
 renderCommand name content rawContent =
-  case name of
-    "title" ->
-      node "pres-title" [] [ span [attribute "slot" "content"] (render content)]
-    _ ->
-      div [] (render content)
+  node ("pres-" ++ name) [] [ span [attribute "slot" "content"] (render content)]
 
 renderStatement : Statement -> Html Msg
 renderStatement statement =
   case statement of
     ParsingHandling.StringStatement rawContent ->
-      text rawContent
+      span [] [text rawContent]
     ParsingHandling.Command name content rawContent ->
       renderCommand name content rawContent
 
