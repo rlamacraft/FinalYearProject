@@ -1,0 +1,26 @@
+<script src="../WebComponentsLibrarySpecV0.js"></script>
+
+<template id="itemize_template">
+  <slot name="content">
+</template>
+
+<script>
+  splitText = (component) => {
+    debugger;
+    if(component.querySelector('ul[slot="content"]') === null) {
+      let out = "";
+      Array.from(component.querySelector('span[slot="content"]').getElementsByTagName("span")).forEach((eachLine) => {
+        out += `<li>${eachLine.outerHTML}</li>`;
+      });
+      component.innerHTML = `<ul slot="content">${out}</ul>`;
+    }
+  }
+
+  onContentChange = (component) => {
+    splitText(component);
+  }
+
+  RegisterComponent("itemize", {
+    onContentChange: onContentChange
+  });
+</script>
