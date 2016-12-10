@@ -1,0 +1,49 @@
+html, body {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  font-size: 12px; }
+
+.container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 100%; }
+  .container .controls {
+    flex-grow: 0;
+    background-color: #eaeaea;
+    padding: 2px;
+    position: relative;
+    height: 40px; }
+    .container .controls button {
+      font-size: 2.5em;
+      margin: 3px 3px;
+      cursor: pointer;
+      background-color: #646464;
+      padding: 7px 10px;
+      border-radius: 5%;
+      color: #fafafa;
+      box-shadow: 1px 2px 2px rgba(100, 100, 100, 0.3);
+      position: relative;
+      z-index: 1;
+      border: none; }
+      .container .controls button i.material-icons {
+        font-size: inherit; }
+    .container .controls .btnPresent {
+      float: right;
+      font-size: 3em; }
+  .container textarea {
+    box-sizing: border-box;
+    flex-grow: 1;
+    overflow: scroll;
+    resize: none;
+    border: none;
+    border-left: 10px #eaeaea solid;
+    font-size: 1em;
+    outline: none;
+    height: calc(100% + 20px);
+    width: 100%;
+    padding: 12px 3px 10px 10px;
+    position: relative; }
+
+/*# sourceMappingURL=editor.css.map */
