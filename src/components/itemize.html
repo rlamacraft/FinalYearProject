@@ -6,7 +6,6 @@
 
 <script>
   splitText = (component) => {
-    debugger;
     if(component.querySelector('ul[slot="content"]') === null) {
       let out = "";
       Array.from(component.querySelector('span[slot="content"]').getElementsByTagName("span")).forEach((eachLine) => {
