@@ -2,9 +2,10 @@ port module Presenter exposing (..)
 
 import Html exposing (..)
 import Html.App as App
-import Html.Events exposing (onClick, onInput)
 
+import PresenterMessages exposing (Msg(..))
 import ParsingHandling exposing (Statement, buildStatementTree)
+import Renderer exposing (render)
 
 main =
   App.program
@@ -25,8 +26,6 @@ init =
 
 
 -- UPDATE
-type Msg = Received String
-
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -50,6 +49,4 @@ subscriptions model =
 -- VIEW
 view : Model -> Html Msg
 view model =
-  div []
-    [ text (toString model.data)
-    ]
+  div [] (Renderer.render model.data)
