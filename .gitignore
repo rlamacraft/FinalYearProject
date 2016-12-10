@@ -5,3 +5,6 @@ src/resources/css/editor.css.map
 
 src/node_modules
 elm-stuff
+
+src/.sass-cache
+*.sassc

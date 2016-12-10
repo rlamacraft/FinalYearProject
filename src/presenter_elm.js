@@ -8590,40 +8590,38 @@ var _user$project$PresenterMessages$Received = function (a) {
 
 var _user$project$Renderer$renderCommand = F3(
 	function (name, content, rawContent) {
-		var _p0 = name;
-		if (_p0 === 'title') {
-			return A3(
-				_elm_lang$html$Html$node,
-				'pres-title',
-				_elm_lang$core$Native_List.fromArray(
-					[]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						A2(
-						_elm_lang$html$Html$span,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								A2(_elm_lang$html$Html_Attributes$attribute, 'slot', 'content')
-							]),
-						_user$project$Renderer$render(content))
-					]));
-		} else {
-			return A2(
-				_elm_lang$html$Html$div,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
-				_user$project$Renderer$render(content));
-		}
+		return A3(
+			_elm_lang$html$Html$node,
+			A2(_elm_lang$core$Basics_ops['++'], 'pres-', name),
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$span,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							A2(_elm_lang$html$Html_Attributes$attribute, 'slot', 'content')
+						]),
+					_user$project$Renderer$render(content))
+				]));
 	});
 var _user$project$Renderer$render = function (statements) {
 	return A2(_elm_lang$core$List$map, _user$project$Renderer$renderStatement, statements);
 };
 var _user$project$Renderer$renderStatement = function (statement) {
-	var _p1 = statement;
-	if (_p1.ctor === 'StringStatement') {
-		return _elm_lang$html$Html$text(_p1._0);
+	var _p0 = statement;
+	if (_p0.ctor === 'StringStatement') {
+		return A2(
+			_elm_lang$html$Html$span,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text(_p0._0)
+				]));
 	} else {
-		return A3(_user$project$Renderer$renderCommand, _p1._0, _p1._1, _p1._2);
+		return A3(_user$project$Renderer$renderCommand, _p0._0, _p0._1, _p0._2);
 	}
 };
 

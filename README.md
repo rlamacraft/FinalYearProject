@@ -5,23 +5,27 @@ The source code of my final year project; a tool for developing Web-based presen
 
 1.  Get the code
 2.  Run the following
-```
+```shell
 elm-make src/editor.elm --output src/editor_elm.js
 elm-make src/presenter.elm --output src/presenter_elm.js
 cd src
-npm install```
+npm install
+```
 
 ## Running
 
 1.  Run the following
-```
+```shell
 cd src
-./node_modules/.bin/electron .```
+./node_modules/.bin/electron .
+```
 
 ## Testing
 
 1.  Run the following
-```
+```shell
 cd tests
-./run-tests.sh```
+./run-tests.sh
+```
+
 2.  Smile at all that green
