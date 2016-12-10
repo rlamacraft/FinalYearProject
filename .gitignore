@@ -1,6 +1,5 @@
 elm-stuff/build-artifacts
 
-*.sassc
 src/resources/.sass-cache
 
 src/resources/css/editor.css.map
