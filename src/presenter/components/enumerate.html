@@ -1,0 +1,41 @@
+<template id="enumerate_template">
+  <style>
+  :host {
+    position: absolute;
+    top: 20vh;
+    left: 0;
+    right: 0;
+  }
+  ::content ol {
+    padding-left: 10vw;
+  }
+  ::content li {
+    color: #1a1a1a;
+    font-family: "roboto", sans-serif;
+    font-weight: 300;
+    font-size: 3vw;
+    margin-bottom: 5vh;
+  }
+  </style>
+  <slot name="content">
+</template>
+
+<script>
+  splitText = (component) => {
+    if(component.querySelector('ul[slot="content"]') === null) {
+      let out = "";
+      Array.from(component.querySelector('span[slot="content"]').getElementsByTagName("span")).forEach((eachLine) => {
+        out += `<li>${eachLine.outerHTML}</li>`;
+      });
+      component.innerHTML = `<ol slot="content">${out}</ol>`;
+    }
+  }
+
+  onStart = (component) => {
+    splitText(component);
+  }
+
+  RegisterComponent("enumerate", {
+    onStart: onStart
+  });
+</script>
