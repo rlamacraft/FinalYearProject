@@ -13,7 +13,7 @@ const windows = {
 let windowCount = 0;
 
 const createEditorWindow = _ => {
-  const newEditorWindow = createWindow("editor", {
+  const newEditorWindow = createWindow("editor/index", {
     width: 500,
     height: 600,
     show: false
@@ -27,7 +27,7 @@ const createEditorWindow = _ => {
   return newEditorWindow;
 };
 const createPresenterWindow = (windowsIndex, content) => {
-  const newPresenterWindow = createWindow("presenter", {
+  const newPresenterWindow = createWindow("presenter/index", {
     width: 800,
     height: 600,
     show: false
