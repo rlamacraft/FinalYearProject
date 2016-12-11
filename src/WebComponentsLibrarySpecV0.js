@@ -36,7 +36,8 @@ const RegisterComponent = function(commandName, functions) {
     const clone = document.importNode(template.content, true);
     root.appendChild(clone);
     correctSlot(root);
-    setMutationObserver(this);
+    if(typeof(functions.onContentChange) === "function")
+      setMutationObserver(this);
   }
 
   proto.detachedCallback = function() {
