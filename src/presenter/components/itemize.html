@@ -13,11 +13,11 @@
     }
   }
 
-  onContentChange = (component) => {
+  onStart = (component) => {
     splitText(component);
   }
 
   RegisterComponent("itemize", {
-    onContentChange: onContentChange
+    onStart: onStart
   });
 </script>

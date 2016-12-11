@@ -1,0 +1,8 @@
+\import{title,itemize}
+
+\title{Example Title}
+
+\itemize{
+  foo
+  bar
+}
