@@ -1,4 +1,22 @@
 <template id="itemize_template">
+  <style>
+  :host {
+    position: absolute;
+    top: 20vh;
+    left: 0;
+    right: 0;
+  }
+  ::content ul {
+    padding-left: 10vw;
+  }
+  ::content li {
+    color: #1a1a1a;
+    font-family: "roboto", sans-serif;
+    font-weight: 300;
+    font-size: 3vw;
+    margin-bottom: 5vh;
+  }
+  </style>
   <slot name="content">
 </template>
 
