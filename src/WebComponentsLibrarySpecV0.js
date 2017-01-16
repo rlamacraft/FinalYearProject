@@ -36,12 +36,21 @@ const RegisterComponent = function(commandName, functions) {
     const clone = document.importNode(template.content, true);
     root.appendChild(clone);
     correctSlot(root);
-    if(typeof(functions.onContentChange) === "function")
+
+    //these are for when the content of the component changes (which includes Elm adding the original content)
+    if(typeof(functions.onContentChange) === "function") {
       setMutationObserver(this);
+    }
+
+    //these are for when the component initially renders, for most components this will be after Elm has added the original content
+    if(typeof(functions.onStart) === "function") {
+      functions.onStart(this);
+    }
   }
 
   proto.detachedCallback = function() {
-    this.observer.disconnect();
+    if(typeof(this.observer) != "undefined")
+      this.observer.disconnect();
   }
 
   document.registerElement(`pres-${commandName}`, {

@@ -1,0 +1,24 @@
+<template id="import_template">
+  <slot name="content">
+</template>
+
+<script>
+  formLinkTags = (component) => {
+    if(component.querySelector('div[slot="content"]') === null) {
+      const componentNames = component.querySelector('span[slot="content"]').getElementsByTagName("span")[0].innerText.split(",");
+      linksHtml = "";
+      componentNames.forEach((eachComponent) => {
+        linksHtml += `<link rel="import" href="components/${eachComponent}.html" id="${eachComponent}_import">\n`;
+      })
+      component.innerHTML = `<div slot="content">${linksHtml}</div>`;
+    }
+  }
+
+  onContentChange = (component) => {
+    formLinkTags(component);
+  }
+
+  RegisterComponent("import", {
+    onContentChange: onContentChange
+  });
+</script>

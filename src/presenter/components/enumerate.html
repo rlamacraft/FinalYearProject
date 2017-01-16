@@ -1,4 +1,4 @@
-<template id="itemize_template">
+<template id="enumerate_template">
   <style>
   :host {
     position: absolute;
@@ -6,7 +6,7 @@
     left: 0;
     right: 0;
   }
-  ::content ul {
+  ::content ol {
     padding-left: 10vw;
   }
   ::content li {
@@ -27,7 +27,7 @@
       Array.from(component.querySelector('span[slot="content"]').getElementsByTagName("span")).forEach((eachLine) => {
         out += `<li>${eachLine.outerHTML}</li>`;
       });
-      component.innerHTML = `<ul slot="content">${out}</ul>`;
+      component.innerHTML = `<ol slot="content">${out}</ol>`;
     }
   }
 
@@ -35,7 +35,7 @@
     splitText(component);
   }
 
-  RegisterComponent("itemize", {
+  RegisterComponent("enumerate", {
     onStart: onStart
   });
 </script>

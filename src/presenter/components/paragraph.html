@@ -1,0 +1,28 @@
+<template id="paragraph_template">
+  <style>
+  :host {
+    position: absolute;
+    top: 20vh;
+    left: 0;
+    right: 0;
+  }
+  div {
+    padding-left: 5vw;
+    padding-right: 5vw;
+  }
+  p {
+    color: #1a1a1a;
+    font-family: "roboto", sans-serif;
+    font-weight: 300;
+    font-size: 3vw;
+    margin-bottom: 5vh;
+  }
+  </style>
+  <div>
+    <p><slot name="content"></p>
+  </div>
+</template>
+
+<script>
+  RegisterComponent("paragraph", {});
+</script>
