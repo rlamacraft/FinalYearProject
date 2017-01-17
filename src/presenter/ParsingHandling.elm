@@ -3,13 +3,13 @@ module ParsingHandling exposing (..)
   Convert the parsed input text as a JSON string into the described data model
 -}
 
-import List exposing (..)
 import Json.Decode exposing (..)
 import Json.Decode.Extra exposing (..)
 
 type Statement = Command String (List Statement) String | StringStatement String
 
 -- Decode a nested JSON string of 'Statements' as objects into the above Statement type
+statementDecoder : Decoder Statement
 statementDecoder =
   object3
     processStatement

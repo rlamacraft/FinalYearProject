@@ -1,12 +1,16 @@
 port module Presenter exposing (..)
 
+import List exposing(map,sum,length)
+
 import Html exposing (..)
+import Html.Events exposing (onClick)
 import Html.App as App
 
 import PresenterMessages exposing (Msg(..))
 import ParsingHandling exposing (Statement, buildStatementTree)
-import Renderer exposing (render)
+import Renderer exposing (renderStatements)
 
+main : Program Never
 main =
   App.program
     { init = init
@@ -18,14 +22,33 @@ main =
 
 -- MODEL
 type alias Model =
-  { data : List Statement }
+  { data : List Statement
+  , displayIndex : Int }
 
 init : (Model, Cmd Msg)
 init =
-  (Model [], Cmd.none)
+  (Model [] 0, Cmd.none)
 
 
 -- UPDATE
+
+sumStatements : Statement -> Int
+sumStatements statement =
+ case statement of
+    ParsingHandling.StringStatement rawContent ->
+      0
+    ParsingHandling.Command name content rawContent ->
+      sum ( map sumStatements content ) + 1
+
+cycleTransition : Model -> Int
+cycleTransition model =
+  let
+    numOfStatements = sum ( map sumStatements model.data ) -- TODO: memoise as will be used with each render but rarely change
+  in
+    if model.displayIndex == numOfStatements - 1 then
+      0
+    else
+      model.displayIndex + 1
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -37,6 +60,8 @@ update msg model =
           ( model, Cmd.none )
         Ok newData ->
           ( { model | data = newData }, Cmd.none )
+    ForwardTransition ->
+      ( { model | displayIndex = cycleTransition model}, Cmd.none )
 
 -- PORTS
 port parsedData : (String -> msg) -> Sub msg
@@ -49,4 +74,4 @@ subscriptions model =
 -- VIEW
 view : Model -> Html Msg
 view model =
-  div [] (Renderer.render model.data)
+  div [ onClick ForwardTransition ] (Renderer.renderStatements model.data model.displayIndex)

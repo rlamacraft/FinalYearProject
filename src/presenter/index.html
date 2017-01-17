@@ -3,6 +3,25 @@
 
 <head>
   <title>Presenter Window</title>
+
+  <style>
+    #container > div{
+      top: 0;
+      bottom: 0;
+      position: absolute;
+      left: 0;
+      right: 0;
+    }
+    *[displaying="hidden"] {
+      opacity: 0.0;
+    }
+    *[displaying="showing"] {
+      opacity: 1.0;
+    }
+    * {
+      transition: all .3s ease;
+    }
+  </style>
 </head>
 
 <body>
