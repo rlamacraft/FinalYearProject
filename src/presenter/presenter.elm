@@ -7,7 +7,8 @@ import Html.Events exposing (onClick)
 import Html.App as App
 
 import PresenterMessages exposing (Msg(..))
-import ParsingHandling exposing (Statement, buildStatementTree)
+import Statement exposing (Statement,numOfChildCommands)
+import ParsingHandling exposing (buildStatementTree)
 import Renderer exposing (renderStatements)
 
 main : Program Never
@@ -32,18 +33,10 @@ init =
 
 -- UPDATE
 
-sumStatements : Statement -> Int
-sumStatements statement =
- case statement of
-    ParsingHandling.StringStatement rawContent ->
-      0
-    ParsingHandling.Command name content rawContent ->
-      sum ( map sumStatements content ) + 1
-
 cycleTransition : Model -> Int
 cycleTransition model =
   let
-    numOfStatements = sum ( map sumStatements model.data ) -- TODO: memoise as will be used with each render but rarely change
+    numOfStatements = length model.data + sum ( map Statement.numOfChildCommands model.data)
   in
     if model.displayIndex == numOfStatements - 1 then
       0
@@ -62,6 +55,7 @@ update msg model =
           ( { model | data = newData }, Cmd.none )
     ForwardTransition ->
       ( { model | displayIndex = cycleTransition model}, Cmd.none )
+
 
 -- PORTS
 port parsedData : (String -> msg) -> Sub msg

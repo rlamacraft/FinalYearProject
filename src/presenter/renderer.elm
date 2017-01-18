@@ -1,35 +1,39 @@
 module Renderer exposing (renderStatements)
 
 import PresenterMessages exposing (Msg)
-import ParsingHandling exposing (Statement)
+import Statement exposing (Statement,numOfChildCommands)
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import List exposing(map,head,tail)
+import List exposing(map,head,tail,sum)
 
 renderSingleStatement : Int -> Statement -> Html Msg
 renderSingleStatement displayIndex statement =
   let
+    numOfDescendents = Statement.numOfChildCommands statement
+    isALeafNode      = numOfDescendents == 0
+    isAParentNode    = numOfDescendents > 0
     displaying =
-      if displayIndex == 0 then "showing" else "hidden"
+      if (isAParentNode && displayIndex < numOfDescendents) || (isALeafNode && displayIndex == 0) then
+        "showing" else "hidden"
   in
      case statement of
-        ParsingHandling.StringStatement rawContent ->
+        Statement.StringStatement rawContent ->
           span [] [text rawContent]
-        ParsingHandling.Command name content rawContent ->
+        Statement.Command name content rawContent ->
           node ("pres-" ++ name)
             [ attribute "displaying" displaying ]
             [ span
               [attribute "slot" "content"]
-              (renderStatements content 0)
+              (renderStatements content displayIndex)
             ]
 
 calculateDisplayIndexProgression : Int -> Statement -> Int
 calculateDisplayIndexProgression displayIndex statement =
   case statement of
-    ParsingHandling.Command name content rawContent ->
+    Statement.Command name content rawContent ->
       case name of
         "import" -> displayIndex
-        _ -> displayIndex - 1
+        _ -> displayIndex - (Statement.numOfChildCommands statement + 1)
     _ -> displayIndex
 
 renderListHead : Statement -> Maybe (List Statement) -> Int -> List (Html Msg)

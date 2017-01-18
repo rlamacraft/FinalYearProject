@@ -6,7 +6,7 @@ module ParsingHandling exposing (..)
 import Json.Decode exposing (..)
 import Json.Decode.Extra exposing (..)
 
-type Statement = Command String (List Statement) String | StringStatement String
+import Statement exposing (Statement)
 
 -- Decode a nested JSON string of 'Statements' as objects into the above Statement type
 statementDecoder : Decoder Statement
@@ -22,9 +22,9 @@ processStatement : String -> (List Statement) -> String -> Statement
 processStatement name content rawContent =
   case name of
     "_string" ->
-      StringStatement rawContent
+      Statement.StringStatement rawContent
     _ ->
-      Command name content rawContent
+      Statement.Command name content rawContent
 
 -- Convert a JSON string of 'Statement's into a list of Statements
 buildStatementTree : String -> Result String (List Statement)
