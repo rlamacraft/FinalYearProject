@@ -52,7 +52,7 @@ update msg model =
           Debug.log msg
           ( model, Cmd.none )
         Ok newData ->
-          ( { model | data = newData }, Cmd.none )
+          ( { model | data = newData, displayIndex = 0}, Cmd.none )
     ForwardTransition ->
       ( { model | displayIndex = cycleTransition model}, Cmd.none )
 
