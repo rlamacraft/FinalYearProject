@@ -16,6 +16,9 @@
     font-size: 3vw;
     margin-bottom: 5vh;
   }
+  ::content pres-itemize, ::content pres-enumerate {
+    position: initial;
+  }
   </style>
   <slot name="content">
 </template>
@@ -24,8 +27,12 @@
   splitText = (component) => {
     if(component.querySelector('ul[slot="content"]') === null) {
       let out = "";
-      Array.from(component.querySelector('span[slot="content"]').getElementsByTagName("span")).forEach((eachLine) => {
-        out += `<li>${eachLine.outerHTML}</li>`;
+      let validChildren = component.querySelector('span[slot="content"]').childNodes;
+      Array.from(validChildren).forEach((eachLine) => {
+        if(eachLine.nodeName === "SPAN")
+          out += `<li>${eachLine.outerHTML}</li>`;
+        else
+          out += eachLine.outerHTML;
       });
       component.innerHTML = `<ol slot="content">${out}</ol>`;
     }

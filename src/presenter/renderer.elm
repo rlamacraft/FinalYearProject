@@ -1,7 +1,7 @@
 module Renderer exposing (renderStatements)
 
 import PresenterMessages exposing (Msg)
-import Statement exposing (Statement,numOfChildCommands)
+import Statement exposing (Statement,numOfLeafCommandDescendents)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import List exposing(map,head,tail,sum)
@@ -9,23 +9,24 @@ import List exposing(map,head,tail,sum)
 renderSingleStatement : Int -> Statement -> Html Msg
 renderSingleStatement displayIndex statement =
   let
-    numOfDescendents = Statement.numOfChildCommands statement
-    isALeafNode      = numOfDescendents == 0
-    isAParentNode    = numOfDescendents > 0
+    -- numOfDescendents = Statement.numOfChildCommands statement
+    numOfLeafCommandDescendents = Statement.numOfLeafCommandDescendents statement
+    isALeafNode      = numOfLeafCommandDescendents == 0
+    isAParentNode    = numOfLeafCommandDescendents > 0
     displaying =
-      if (isAParentNode && displayIndex < numOfDescendents) || (isALeafNode && displayIndex == 0) then
+      if (isAParentNode && displayIndex < numOfLeafCommandDescendents) || (isALeafNode && displayIndex == 0) then
         "showing" else "hidden"
   in
-     case statement of
-        Statement.StringStatement rawContent ->
-          span [] [text rawContent]
-        Statement.Command name content rawContent ->
-          node ("pres-" ++ name)
-            [ attribute "displaying" displaying ]
-            [ span
-              [attribute "slot" "content"]
-              (renderStatements content displayIndex)
-            ]
+    case statement of
+      Statement.StringStatement rawContent ->
+        span [] [text rawContent]
+      Statement.Command name content rawContent ->
+        node ("pres-" ++ name)
+          [ attribute "displaying" displaying ]
+          [ span
+            [attribute "slot" "content"]
+            (renderStatements content displayIndex)
+          ]
 
 calculateDisplayIndexProgression : Int -> Statement -> Int
 calculateDisplayIndexProgression displayIndex statement =
@@ -33,7 +34,7 @@ calculateDisplayIndexProgression displayIndex statement =
     Statement.Command name content rawContent ->
       case name of
         "import" -> displayIndex
-        _ -> displayIndex - (Statement.numOfChildCommands statement + 1)
+        _ -> displayIndex - (Statement.numOfLeafCommandDescendents statement + 1)
     _ -> displayIndex
 
 renderListHead : Statement -> Maybe (List Statement) -> Int -> List (Html Msg)

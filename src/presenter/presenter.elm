@@ -7,7 +7,7 @@ import Html.Events exposing (onClick)
 import Html.App as App
 
 import PresenterMessages exposing (Msg(..))
-import Statement exposing (Statement,numOfChildCommands)
+import Statement exposing (Statement,numOfLeafCommandDescendents)
 import ParsingHandling exposing (buildStatementTree)
 import Renderer exposing (renderStatements)
 
@@ -36,9 +36,9 @@ init =
 cycleTransition : Model -> Int
 cycleTransition model =
   let
-    numOfStatements = length model.data + sum ( map Statement.numOfChildCommands model.data)
+    numOfCommands = length model.data + sum ( map Statement.numOfLeafCommandDescendents model.data)
   in
-    if model.displayIndex == numOfStatements - 1 then
+    if model.displayIndex == numOfCommands - 1 then
       0
     else
       model.displayIndex + 1
