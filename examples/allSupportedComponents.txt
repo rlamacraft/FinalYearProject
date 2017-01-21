@@ -1,10 +1,15 @@
-\import{title,itemize,enumerate}
+\hidden{
+  \import{title,itemize,enumerate}
+}
 
 \title{Example Title}
 
 \itemize{
   foo
   bar
+  \hidden{
+    hidden statements can be used to add notes to the slides
+}
 }
 
 \enumerate{

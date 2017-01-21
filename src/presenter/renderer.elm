@@ -9,7 +9,6 @@ import List exposing(map,head,tail,sum)
 renderSingleStatement : Int -> Statement -> Html Msg
 renderSingleStatement displayIndex statement =
   let
-    -- numOfDescendents = Statement.numOfChildCommands statement
     numOfLeafCommandDescendents = Statement.numOfLeafCommandDescendents statement
     isALeafNode      = numOfLeafCommandDescendents == 0
     isAParentNode    = numOfLeafCommandDescendents > 0
@@ -25,7 +24,7 @@ renderSingleStatement displayIndex statement =
           [ attribute "displaying" displaying ]
           [ span
             [attribute "slot" "content"]
-            (renderStatements content displayIndex)
+            (renderStatements content displayIndex) -- "hidden" should be used for all descendents of hidden components?
           ]
 
 calculateDisplayIndexProgression : Int -> Statement -> Int
@@ -33,7 +32,7 @@ calculateDisplayIndexProgression displayIndex statement =
   case statement of
     Statement.Command name content rawContent ->
       case name of
-        "import" -> displayIndex
+        "hidden" -> displayIndex
         _ -> displayIndex - (Statement.numOfLeafCommandDescendents statement + 1)
     _ -> displayIndex
 

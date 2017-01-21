@@ -1,4 +1,6 @@
-\import{title,itemize}
+\hidden{
+  \import{title,itemize}
+}
 
 \title{Nested Itemize}
 

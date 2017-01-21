@@ -1,13 +1,13 @@
 port module Presenter exposing (..)
 
-import List exposing(map,sum,length)
+import List exposing(map,sum,length,filter)
 
 import Html exposing (..)
 import Html.Events exposing (onClick)
 import Html.App as App
 
 import PresenterMessages exposing (Msg(..))
-import Statement exposing (Statement,numOfLeafCommandDescendents)
+import Statement exposing (Statement,numOfLeafCommandDescendents,isRenderable)
 import ParsingHandling exposing (buildStatementTree)
 import Renderer exposing (renderStatements)
 
@@ -36,7 +36,9 @@ init =
 cycleTransition : Model -> Int
 cycleTransition model =
   let
-    numOfCommands = length model.data + sum ( map Statement.numOfLeafCommandDescendents model.data)
+    renderableStatements = filter Statement.isRenderable model.data
+    numOfCommands = length renderableStatements + sum ( map Statement.numOfLeafCommandDescendents renderableStatements)
+    _ = Debug.log "numOfCommands" numOfCommands
   in
     if model.displayIndex == numOfCommands - 1 then
       0
