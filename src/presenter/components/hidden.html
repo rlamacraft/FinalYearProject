@@ -1,0 +1,12 @@
+<template id="hidden_template">
+  <style>
+    .hidden-wrapper {
+      display: none;
+    }
+  </style>
+  <div class="hidden-wrapper"><slot name="content"></div>
+</template>
+
+<script>
+  RegisterComponent("hidden", {});
+</script>

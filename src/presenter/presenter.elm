@@ -1,12 +1,17 @@
 port module Presenter exposing (..)
 
+import List exposing(map,sum,length,filter)
+
 import Html exposing (..)
+import Html.Events exposing (onClick)
 import Html.App as App
 
 import PresenterMessages exposing (Msg(..))
-import ParsingHandling exposing (Statement, buildStatementTree)
-import Renderer exposing (render)
+import Statement exposing (Statement,numOfLeafCommandDescendents,isRenderable)
+import ParsingHandling exposing (buildStatementTree)
+import Renderer exposing (renderStatements)
 
+main : Program Never
 main =
   App.program
     { init = init
@@ -18,14 +23,27 @@ main =
 
 -- MODEL
 type alias Model =
-  { data : List Statement }
+  { data : List Statement
+  , displayIndex : Int }
 
 init : (Model, Cmd Msg)
 init =
-  (Model [], Cmd.none)
+  (Model [] 0, Cmd.none)
 
 
 -- UPDATE
+
+cycleTransition : Model -> Int
+cycleTransition model =
+  let
+    renderableStatements = filter Statement.isRenderable model.data
+    numOfCommands = length renderableStatements + sum ( map Statement.numOfLeafCommandDescendents renderableStatements)
+    _ = Debug.log "numOfCommands" numOfCommands
+  in
+    if model.displayIndex == numOfCommands - 1 then
+      0
+    else
+      model.displayIndex + 1
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -36,7 +54,10 @@ update msg model =
           Debug.log msg
           ( model, Cmd.none )
         Ok newData ->
-          ( { model | data = newData }, Cmd.none )
+          ( { model | data = newData, displayIndex = 0}, Cmd.none )
+    ForwardTransition ->
+      ( { model | displayIndex = cycleTransition model}, Cmd.none )
+
 
 -- PORTS
 port parsedData : (String -> msg) -> Sub msg
@@ -49,4 +70,4 @@ subscriptions model =
 -- VIEW
 view : Model -> Html Msg
 view model =
-  div [] (Renderer.render model.data)
+  div [ onClick ForwardTransition ] (Renderer.renderStatements model.data model.displayIndex)
