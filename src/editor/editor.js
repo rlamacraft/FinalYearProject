@@ -10,7 +10,7 @@ let windowIndex;
 let currentFile = "";
 
 app.ports.parseText.subscribe(function(text) {
-  ipcRenderer.send('show-pres', windowIndex, text);
+  ipcRenderer.send('show-pres', windowIndex, {currentFile:currentFile,data:text});
 });
 
 /*

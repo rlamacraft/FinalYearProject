@@ -8,7 +8,12 @@ let app = Elm.Presenter.embed(container);
 
 ipcRenderer.on("show-pres", (event, message) => {
   try {
-    const parsedData = parser.parse(message);
+    const currentFile = message.currentFile;
+    const indexOfFileName = currentFile.lastIndexOf("/");
+    const currentDirectory = currentFile.substring(0,indexOfFileName);
+    document.getElementById("currentDirectory").setAttribute("data-directory",currentDirectory);
+
+    const parsedData = parser.parse(message.data);
     console.log(parsedData);
     app.ports.parsedData.send(JSON.stringify(parsedData));
   } catch(ex) {
