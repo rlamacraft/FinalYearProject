@@ -1,0 +1,12 @@
+#container {
+  --font-family: "Times New Roman", serif;
+}
+
+#background {
+  background-color: #d6d2c6;
+}
+
+pres-title {
+  --font-family: "Zapfino", "Times New Roman", serif;
+  --font-size: 10vh;
+}

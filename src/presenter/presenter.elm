@@ -4,6 +4,7 @@ import List exposing(map,sum,length,filter)
 
 import Html exposing (..)
 import Html.Events exposing (onClick)
+import Html.Attributes exposing (id)
 import Html.App as App
 
 import PresenterMessages exposing (Msg(..))
@@ -38,7 +39,6 @@ cycleTransition model =
   let
     renderableStatements = filter Statement.isRenderable model.data
     numOfCommands = length renderableStatements + sum ( map Statement.numOfLeafCommandDescendents renderableStatements)
-    _ = Debug.log "numOfCommands" numOfCommands
   in
     if model.displayIndex == numOfCommands - 1 then
       0
@@ -70,4 +70,4 @@ subscriptions model =
 -- VIEW
 view : Model -> Html Msg
 view model =
-  div [ onClick ForwardTransition ] (Renderer.renderStatements model.data model.displayIndex)
+  div [ onClick ForwardTransition, id "background" ] (Renderer.renderStatements model.data model.displayIndex)

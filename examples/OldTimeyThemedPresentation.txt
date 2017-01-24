@@ -1,0 +1,10 @@
+\hidden{
+  \import{stylesheet,title,paragraph}
+  \stylesheet{themes/oldTimey.css}
+}
+
+\title{Old Timey Theme}
+
+\paragraph{
+  This is a presentation to show off the old-timey theme.
+}
