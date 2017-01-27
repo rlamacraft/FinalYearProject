@@ -1,5 +1,5 @@
 \hidden{
-  \import{title,stylesheet,paragraph,itemize}
+  \import{title,stylesheet,paragraph,itemize,anim-li}
   \stylesheet{themes/materialDesignInspired.css}
 }
 
@@ -8,7 +8,7 @@
 \paragraph{Material Design is a design language developed in 2014 by Google. Expanding upon the "card" motifs that debuted in Google Now, Material Design makes more liberal use of grid-based layouts, responsive animations and transitions, padding, and depth effects such as lighting and shadows.}
 
 \itemize{
-  Material is the metaphor.
-  Bold, graphic, intentional.
-  Motion provides meaning.
+  \anim-li{Material is the metaphor.}
+  \anim-li{Bold, graphic, intentional.}
+  \anim-li{Motion provides meaning.}
 }

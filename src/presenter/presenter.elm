@@ -38,7 +38,7 @@ cycleTransition : Model -> Int
 cycleTransition model =
   let
     renderableStatements = filter Statement.isRenderable model.data
-    numOfCommands = length renderableStatements + sum ( map Statement.numOfLeafCommandDescendents renderableStatements)
+    numOfCommands = sum ( map Statement.numOfLeafCommandDescendents renderableStatements)
   in
     if model.displayIndex == numOfCommands - 1 then
       0

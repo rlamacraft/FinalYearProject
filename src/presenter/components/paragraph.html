@@ -5,6 +5,13 @@
     top: 20vh;
     left: 0;
     right: 0;
+    transition: var(--transition-animation);
+  }
+  :host([displaying="coming"]) p {
+    transform: var(--coming-transform);
+  }
+  :host([displaying="seen"]) p {
+    transform: var(--seen-transform);
   }
   div {
     padding-left: 5vw;
@@ -20,6 +27,7 @@
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     padding: var(--padding);
+    transition: var(--transition-animation);
   }
   </style>
   <div>

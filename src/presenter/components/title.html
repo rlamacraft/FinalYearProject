@@ -9,6 +9,13 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    transition: var(--transition-animation);
+  }
+  :host([displaying="coming"]) h1 {
+    transform: var(--coming-transform);
+  }
+  :host([displaying="seen"]) h1 {
+    transform: var(--seen-transform);
   }
   div {
     padding-left: 5vw;
@@ -24,6 +31,7 @@
     border-radius: var(--border-radius);
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
+    transition: var(--transition-animation);
   }
   </style>
   <div>
