@@ -38,8 +38,8 @@ command
 stringStatement
   = value:generalString returns:newLines { return generateParsedStatement("_string", [], value + returns) }
 
-identifier /* identifies beginning with an underscore are private */
-  = chars:[a-z]+ { return chars.join("") }
+identifier /* identifiers beginning with an underscore are private */
+  = chars:[a-z\-]+ { return chars.join("") }
 
 generalString
   = chars:[^\\{}\n]+ { return chars.join("") }

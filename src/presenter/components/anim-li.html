@@ -1,0 +1,27 @@
+<template id="anim-li_template">
+  <style>
+  li {
+    color: var(--font-color, #1a1a1a);
+    font-family: var(--font-family,"roboto", sans-serif);
+    font-weight: var(--font-weight, 300);
+    font-size: var(--font-size, 3vw);
+    margin-bottom: var(--item-spacing, 5vh);
+    transition: var(--transition-animation);
+  }
+  :host([displaying="coming"]) li {
+    transform: var(--coming-transform);
+    opacity: var(--coming-opacity,0.0);
+  }
+  :host([displaying="seen"]) li {
+    transform: var(--seen-transform);
+    opacity: var(--seen-opacity,1.0);
+  }
+  </style>
+  <div>
+    <li><slot name="content"></li>
+  </div>
+</template>
+
+<script>
+  RegisterComponent("anim-li", {});
+</script>

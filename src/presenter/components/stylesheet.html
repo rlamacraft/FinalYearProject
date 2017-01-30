@@ -1,0 +1,26 @@
+<template id="stylesheet_template">
+  To hide this message, place the stylesheet statement inside a "hidden" statement
+  <slot name="content">
+</template>
+
+<script>
+  formLinkTags = (component) => {
+    if(component.querySelector('div[slot="content"]') === null) {
+      const currentDirectory = document.getElementById("currentDirectory").getAttribute("data-directory");
+      const componentNames = component.querySelector('span[slot="content"]').getElementsByTagName("span")[0].innerText.split(",");
+      linksHtml = "";
+      componentNames.forEach((eachComponent) => {
+        linksHtml += `<link rel="stylesheet" href="${currentDirectory}/${eachComponent}">\n`;
+      })
+      component.innerHTML = `<div slot="content">${linksHtml}</div>`;
+    }
+  }
+
+  onStart = (component) => {
+    formLinkTags(component);
+  }
+
+  RegisterComponent("stylesheet", {
+    onStart: onStart
+  });
+</script>

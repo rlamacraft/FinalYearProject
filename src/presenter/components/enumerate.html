@@ -5,16 +5,17 @@
     top: 20vh;
     left: 0;
     right: 0;
+    transition: var(--transition-animation);
   }
   ::content ol {
     padding-left: 10vw;
   }
   ::content li {
-    color: #1a1a1a;
-    font-family: "roboto", sans-serif;
-    font-weight: 300;
-    font-size: 3vw;
-    margin-bottom: 5vh;
+    color: var(--font-color, #1a1a1a);
+    font-family: var(--font-family,"roboto", sans-serif);
+    font-weight: var(--font-weight, 300);
+    font-size: var(--font-size, 3vw);
+    margin-bottom: var(--item-spacing, 5vh);
   }
   ::content pres-itemize, ::content pres-enumerate {
     position: initial;

@@ -36,7 +36,7 @@ hasNoCommandChildren statement =
     StringStatement rawContent ->
       False
     Command name content rawContent ->
-      all isACommand content
+      not <| all isACommand content
 
 isACommand : Statement -> Bool
 isACommand statement =

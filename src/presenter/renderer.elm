@@ -6,15 +6,27 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import List exposing(map,head,tail,sum)
 
+name : Statement -> String
+name statement =
+  case statement of
+    Statement.Command name content rawContent ->
+      name
+    _ -> "string"
+
 renderSingleStatement : Int -> Statement -> Html Msg
 renderSingleStatement displayIndex statement =
   let
     numOfLeafCommandDescendents = Statement.numOfLeafCommandDescendents statement
-    isALeafNode      = numOfLeafCommandDescendents == 0
-    isAParentNode    = numOfLeafCommandDescendents > 0
+    isALeafNode      = numOfLeafCommandDescendents == 1
+    isAParentNode    = numOfLeafCommandDescendents > 1
+    displayingState = if displayIndex > 0 then "seen" else if displayIndex < 0 then "coming" else "showing"
     displaying =
-      if (isAParentNode && displayIndex < numOfLeafCommandDescendents) || (isALeafNode && displayIndex == 0) then
-        "showing" else "hidden"
+      if (isAParentNode && displayIndex < numOfLeafCommandDescendents && displayIndex >= 0) then
+        "child-showing"
+      else if (isALeafNode) then
+        displayingState
+      else
+        "hidden"
   in
     case statement of
       Statement.StringStatement rawContent ->
@@ -24,7 +36,7 @@ renderSingleStatement displayIndex statement =
           [ attribute "displaying" displaying ]
           [ span
             [attribute "slot" "content"]
-            (renderStatements content displayIndex) -- "hidden" should be used for all descendents of hidden components?
+            (renderStatements content displayIndex)
           ]
 
 calculateDisplayIndexProgression : Int -> Statement -> Int
@@ -33,7 +45,7 @@ calculateDisplayIndexProgression displayIndex statement =
     Statement.Command name content rawContent ->
       case name of
         "hidden" -> displayIndex
-        _ -> displayIndex - (Statement.numOfLeafCommandDescendents statement + 1)
+        _ -> displayIndex - (Statement.numOfLeafCommandDescendents statement)
     _ -> displayIndex
 
 renderListHead : Statement -> Maybe (List Statement) -> Int -> List (Html Msg)

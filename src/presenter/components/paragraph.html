@@ -5,17 +5,29 @@
     top: 20vh;
     left: 0;
     right: 0;
+    transition: var(--transition-animation);
+  }
+  :host([displaying="coming"]) p {
+    transform: var(--coming-transform);
+  }
+  :host([displaying="seen"]) p {
+    transform: var(--seen-transform);
   }
   div {
     padding-left: 5vw;
     padding-right: 5vw;
   }
   p {
-    color: #1a1a1a;
-    font-family: "roboto", sans-serif;
-    font-weight: 300;
-    font-size: 3vw;
+    color: var(--font-color, #1a1a1a);
+    font-family: var(--font-family, "roboto", sans-serif);
+    font-weight: var(--font-weight, 300);
+    font-size: var(--font-size, 3vw);
     margin-bottom: 5vh;
+    background-color: var(--background-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: var(--padding);
+    transition: var(--transition-animation);
   }
   </style>
   <div>

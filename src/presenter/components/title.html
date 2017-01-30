@@ -9,15 +9,29 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    transition: var(--transition-animation);
+  }
+  :host([displaying="coming"]) h1 {
+    transform: var(--coming-transform);
+  }
+  :host([displaying="seen"]) h1 {
+    transform: var(--seen-transform);
   }
   div {
     padding-left: 5vw;
   }
   h1 {
-    color: #1a1a1a;
-    font-family: "roboto", sans-serif;
-    font-weight: 300;
-    font-size: 15vh;
+    color: var(--font-color, #1a1a1a);
+    font-family: var(--font-family,"roboto", sans-serif);
+    font-weight: var(--font-weight, 300);
+    font-size: var(--font-size, 15vh);
+    padding: var(--padding);
+    background-color: var(--background-color);
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    transition: var(--transition-animation);
   }
   </style>
   <div>
