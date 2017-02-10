@@ -9,7 +9,7 @@ const RegisterComponent = function(commandName, functions) {
     // create an observer instance
     this.observer = new MutationObserver(function(mutations) {
       mutations.forEach(function(mutation) {
-        functions.onContentChange(mutation.target);
+        functions.onContentChange(mutation);
       });
     });
 

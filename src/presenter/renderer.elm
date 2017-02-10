@@ -6,12 +6,20 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import List exposing(map,head,tail,sum)
 
-name : Statement -> String
-name statement =
-  case statement of
-    Statement.Command name content rawContent ->
-      name
-    _ -> "string"
+wrapInContentSpans : List (Html Msg) -> Int -> List (Html Msg)
+wrapInContentSpans renderedStatements slotIndex =
+  let
+    wrapper = span [attribute "slot" ("content_" ++ toString slotIndex)]
+  in
+    case List.head renderedStatements of
+      Just head ->
+        case List.tail renderedStatements of
+          Just tail ->
+            wrapper [head] :: wrapInContentSpans tail (slotIndex + 1)
+          Nothing ->
+            [wrapper [head]]
+      Nothing ->
+        []
 
 renderSingleStatement : Int -> Statement -> Html Msg
 renderSingleStatement displayIndex statement =
@@ -34,10 +42,7 @@ renderSingleStatement displayIndex statement =
       Statement.Command name content rawContent ->
         node ("pres-" ++ name)
           [ attribute "displaying" displaying ]
-          [ span
-            [attribute "slot" "content"]
-            (renderStatements content displayIndex)
-          ]
+          (wrapInContentSpans (renderStatements content displayIndex) 0)
 
 calculateDisplayIndexProgression : Int -> Statement -> Int
 calculateDisplayIndexProgression displayIndex statement =
