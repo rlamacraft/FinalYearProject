@@ -7,43 +7,50 @@
     right: 0;
     transition: var(--transition-animation);
   }
-  ::content ul {
+  :host-context(span) {
+    margin-left: 10vw;
+  }
+  ul {
     padding-left: 10vw;
   }
-  ::content li {
+  li {
     color: var(--font-color, #1a1a1a);
     font-family: var(--font-family,"roboto", sans-serif);
     font-weight: var(--font-weight, 300);
     font-size: var(--font-size, 3vw);
     margin-bottom: var(--item-spacing, 5vh);
+    list-style-type: var(--list-style-type, intial);
   }
-  ::content pres-itemize, ::content pres-enumerate {
+  ::slotted(pres-itemize), ::slotted(pres-enumerate) {
     position: initial;
   }
   </style>
-  <slot name="content">
+  <ul id="listContainer"></ul>
 </template>
 
 <script>
-  splitText = (component) => {
-    if(component.querySelector('ul[slot="content"]') === null) {
-      let out = "";
-      let validChildren = component.querySelector('span[slot="content"]').childNodes;
-      Array.from(validChildren).forEach((eachLine) => {
-        if(eachLine.nodeName === "SPAN")
-          out += `<li>${eachLine.outerHTML}</li>`;
-        else
-          out += eachLine.outerHTML;
-      });
-      component.innerHTML = `<ul slot="content">${out}</ul>`;
-    }
-  }
+  wrapAndAppendNewNodes = (newNodes, container) => {
+    const notLiComponents = ["PRES-ITEMIZE", "PRES-ENUMERATE", "PRES-ANIM-LI", "PRES-HIDDEN"];
 
-  onStart = (component) => {
-    splitText(component);
-  }
+    Array.from(newNodes).forEach((eachNewNode) => {
+      const newSlot = document.createElement("slot");
+      newSlot.setAttribute("name", eachNewNode.attributes.slot.value);
+      let contentContainer = newSlot;
+      if(!notLiComponents.includes(eachNewNode.childNodes[0].tagName)) {
+        const newLi = document.createElement("li");
+        newLi.appendChild(newSlot);
+        contentContainer = newLi;
+      }
+      container.appendChild(contentContainer);
+    });
+  };
 
   RegisterComponent("itemize", {
-    onStart: onStart
+    onStart: (component) => {
+      wrapAndAppendNewNodes(component.childNodes, component.shadowRoot.getElementById("listContainer"));
+    },
+    onContentChange: (mutation) => {
+      wrapAndAppendNewNodes(mutation.addedNodes, mutation.target.shadowRoot.getElementById("listContainer"));
+    }
   });
 </script>

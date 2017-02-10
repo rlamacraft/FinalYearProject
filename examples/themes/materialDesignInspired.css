@@ -19,10 +19,26 @@ pres-paragraph {
   --seen-transform: translateY(100vh);
 }
 
+
+/* LISTS */
+
 pres-itemize {
   --item-spacing: 10vh;
 }
 
 pres-anim-li {
   --seen-opacity: 0.3;
+}
+
+pres-itemize pres-itemize,
+pres-enumerate pres-itemize {
+  --list-style-type: circle;
+}
+
+pres-enumerate pres-enumerate {
+  --list-style-type: lower-latin;
+}
+
+pres-enumerate pres-enumerate pres-enumerate{
+  --list-style-type: upper-roman;
 }
