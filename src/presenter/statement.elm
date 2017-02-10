@@ -1,4 +1,4 @@
-module Statement exposing (Statement(..), numOfLeafCommandDescendents, isRenderable)
+module Statement exposing (Statement(..), numOfLeafCommandDescendents, isRenderableCommand)
 
 import List exposing (sum,map,all)
 
@@ -6,7 +6,7 @@ type Statement = Command String (List Statement) String | StringStatement String
 
 numOfLeafCommandDescendents : Statement -> Int
 numOfLeafCommandDescendents statement =
-  if isRenderable statement then
+  if isRenderableCommand statement then
     case statement of
       Command name content rawContent ->
         if hasNoCommandChildren statement then
@@ -18,8 +18,8 @@ numOfLeafCommandDescendents statement =
   else
     0
 
-isRenderable : Statement -> Bool
-isRenderable statement =
+isRenderableCommand : Statement -> Bool
+isRenderableCommand statement =
   case statement of
     StringStatement rawContent ->
       False
