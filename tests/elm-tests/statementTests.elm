@@ -8,7 +8,8 @@ all : Test
 all =
   describe "All Statement Tests"
     [ isRenderableCommand
-    , numOfLeafCommandDescendents
+    , leafCommandCount
+    , hasNoCommandChildren
     ]
 
 isRenderableCommand : Test
@@ -33,8 +34,8 @@ isRenderableCommand =
             |> Expect.equal True
       ]
 
-numOfLeafCommandDescendents : Test
-numOfLeafCommandDescendents =
+leafCommandCount : Test
+leafCommandCount =
   let
     stringStatement       = Statement.StringStatement "foo"
     hiddenCommand         = Statement.Command "hidden" [Statement.StringStatement "hidden message"] "hidden message"
@@ -46,26 +47,53 @@ numOfLeafCommandDescendents =
     describe "Tests for numOfLeafCommandDescendents"
       [ test "String Statement" <|
         \() ->
-          Statement.numOfLeafCommandDescendents stringStatement
+          Statement.leafCommandCount stringStatement
             |> Expect.equal 0
       , test "Hidden Statement" <|
         \() ->
-          Statement.numOfLeafCommandDescendents hiddenCommand
+          Statement.leafCommandCount hiddenCommand
             |> Expect.equal 0
       , test "No Descendents that are Commands" <|
         \() ->
-          Statement.numOfLeafCommandDescendents noCommandDescendents
+          Statement.leafCommandCount noCommandDescendents
             |> Expect.equal 1
       , test "One Descendent that is a Command" <|
         \() ->
-          Statement.numOfLeafCommandDescendents oneCommandDescendent
+          Statement.leafCommandCount oneCommandDescendent
             |> Expect.equal 1
-      , test "Two Descendent that is a Command" <|
+      , test "Two Descendents that are Commands" <|
         \() ->
-          Statement.numOfLeafCommandDescendents twoCommandDescendents
+          Statement.leafCommandCount twoCommandDescendents
             |> Expect.equal 2
       , test "Parent of a Command that has One Descendent that is a Command" <|
         \() ->
-          Statement.numOfLeafCommandDescendents grandparentOfLeaf
+          Statement.leafCommandCount grandparentOfLeaf
             |> Expect.equal 1
+      ]
+
+hasNoCommandChildren : Test
+hasNoCommandChildren =
+  let
+    stringStatement = Statement.StringStatement "foo"
+    simpleCommand = Statement.Command "child" [ stringStatement ] "foo"
+    parentCommand = Statement.Command "parent" [ simpleCommand ] "\\child{foo}"
+    mixedParentCommand = Statement.Command "mixed" [ simpleCommand, stringStatement ] "\\child{foo}\nfoo"
+  in
+    describe "Tests for hasNoCommandChildren"
+      [ test "String Statement" <|
+        \() ->
+          Statement.hasNoCommandChildren stringStatement
+            |> Expect.equal True
+      , test "Simple Command" <|
+        \() ->
+          Statement.hasNoCommandChildren simpleCommand
+            |> Expect.equal True
+      , test "Parent Command" <|
+        \() ->
+          Statement.hasNoCommandChildren parentCommand
+            |> Expect.equal False
+      , test "Mixed Parent Command" <|
+        \() ->
+          Statement.hasNoCommandChildren mixedParentCommand
+            |> Expect.equal False
       ]
