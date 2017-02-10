@@ -1,6 +1,7 @@
 module ParsingHandlingTests exposing (all)
 
 import ParsingHandling as PH
+import Statement exposing (Statement)
 import Test exposing (..)
 import Expect
 
@@ -14,8 +15,8 @@ all =
 processStatement : Test
 processStatement =
   let
-    simpleStringStatement = PH.StringStatement "foo"
-    childCommand          = PH.Command "childCommand" [] ""
+    simpleStringStatement = Statement.StringStatement "foo"
+    childCommand          = Statement.Command "childCommand" [] ""
   in
     describe "Tests for processStatement"
       [ test "Simple String" <|
@@ -25,26 +26,26 @@ processStatement =
       , test "Empty String" <|
         \() ->
           PH.processStatement "_string" [] ""
-            |> Expect.equal (PH.StringStatement "")
+            |> Expect.equal (Statement.StringStatement "")
       , test "Simple Component" <|
         \() ->
           PH.processStatement "componentName" [ simpleStringStatement ] "foo"
-            |> Expect.equal (PH.Command "componentName" [ simpleStringStatement ] "foo")
+            |> Expect.equal (Statement.Command "componentName" [ simpleStringStatement ] "foo")
       , test "Empty Component" <|
         \() ->
           PH.processStatement "componentName" [] ""
-            |> Expect.equal (PH.Command "componentName" [] "")
+            |> Expect.equal (Statement.Command "componentName" [] "")
       , test "Nested Components" <|
         \() ->
           PH.processStatement "parentComponent" [ childCommand ] ""
-            |> Expect.equal (PH.Command "parentComponent" [ childCommand ] "")
+            |> Expect.equal (Statement.Command "parentComponent" [ childCommand ] "")
       ]
 
 buildStatementTree : Test
 buildStatementTree =
   let
-    simpleStringStatement = PH.StringStatement "foo\n"
-    simpleCommand = PH.Command "a" [ PH.StringStatement "b" ] "b"
+    simpleStringStatement = Statement.StringStatement "foo\n"
+    simpleCommand = Statement.Command "a" [ Statement.StringStatement "b" ] "b"
   in
     describe "Tests for buildStatementTree"
       [ test "Empty String" <|

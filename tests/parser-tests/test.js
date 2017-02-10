@@ -1,5 +1,5 @@
 var assert = require('assert');
-var parser = require("../../src/parser.js")
+var parser = require("../../src/presenter/parser.js")
 describe('Parser', function() {
   describe('empty string', function() {
     it('should return: ""', function() {
