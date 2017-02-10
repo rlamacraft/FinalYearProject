@@ -51,7 +51,6 @@ update msg model =
     Received newData ->
       case buildStatementTree newData of
         Err msg ->
-          Debug.log msg
           ( model, Cmd.none )
         Ok newData ->
           ( { model | data = newData, displayIndex = 0}, Cmd.none )

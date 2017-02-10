@@ -5,14 +5,14 @@
 
 <script>
   formLinkTags = (component) => {
-    if(component.querySelector('div[slot="content"]') === null) {
+    if(component.querySelector('div[slot="content_0"]') === null) {
       const currentDirectory = document.getElementById("currentDirectory").getAttribute("data-directory");
-      const componentNames = component.querySelector('span[slot="content"]').getElementsByTagName("span")[0].innerText.split(",");
+      const componentNames = component.querySelector('span[slot="content_0"]').getElementsByTagName("span")[0].innerText.split(",");
       linksHtml = "";
       componentNames.forEach((eachComponent) => {
         linksHtml += `<link rel="stylesheet" href="${currentDirectory}/${eachComponent}">\n`;
       })
-      component.innerHTML = `<div slot="content">${linksHtml}</div>`;
+      component.innerHTML = `<div slot="content_0">${linksHtml}</div>`;
     }
   }
 
