@@ -33,7 +33,7 @@ statement
   = ind:indentation thing:command newLines {return thing} / ind:indentation thing:stringStatement {return thing}
 
 command
-  = "\\" name:identifier "{" newLines? content:(statement*) "}" { return generateParsedStatement(name, content, getRaw(content)) }
+  = "\\" name:identifier "{" newLines? content:(statement*) newLines? ind:indentation "}" { return generateParsedStatement(name, content, getRaw(content)) }
 
 stringStatement
   = value:generalString returns:newLines { return generateParsedStatement("_string", [], value + returns) }

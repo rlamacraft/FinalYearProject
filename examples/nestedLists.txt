@@ -11,8 +11,8 @@
     second depth
     \itemize{
       third depth
-}
-}
+    }
+  }
 }
 
 \enumerate{
@@ -21,6 +21,6 @@
     second depth
     \enumerate{
       third depth
-}
-}
+    }
+  }
 }
