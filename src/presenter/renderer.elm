@@ -1,7 +1,7 @@
 module Renderer exposing (renderStatements)
 
 import PresenterMessages exposing (Msg)
-import Statement exposing (Statement,numOfLeafCommandDescendents)
+import Statement exposing (Statement,leafCommandCount)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import List exposing(map,head,tail,sum)
@@ -24,12 +24,12 @@ wrapInContentSpans renderedStatements slotIndex =
 renderSingleStatement : Int -> Statement -> Html Msg
 renderSingleStatement displayIndex statement =
   let
-    numOfLeafCommandDescendents = Statement.numOfLeafCommandDescendents statement
-    isALeafNode      = numOfLeafCommandDescendents == 1
-    isAParentNode    = numOfLeafCommandDescendents > 1
+    leafCommandCount = Statement.leafCommandCount statement
+    isALeafNode       = Statement.hasNoCommandChildren statement
+    isAParentNode    = not <| Statement.hasNoCommandChildren statement
     displayingState = if displayIndex > 0 then "seen" else if displayIndex < 0 then "coming" else "showing"
     displaying =
-      if (isAParentNode && displayIndex < numOfLeafCommandDescendents && displayIndex >= 0) then
+      if (isAParentNode && displayIndex < leafCommandCount && displayIndex >= 0) then
         "child-showing"
       else if (isALeafNode) then
         displayingState
@@ -42,7 +42,7 @@ renderSingleStatement displayIndex statement =
       Statement.Command name content rawContent ->
         node ("pres-" ++ name)
           [ attribute "displaying" displaying ]
-          (wrapInContentSpans (renderStatements content displayIndex) 0)
+          <| wrapInContentSpans (renderStatements content displayIndex) 0
 
 calculateDisplayIndexProgression : Int -> Statement -> Int
 calculateDisplayIndexProgression displayIndex statement =
@@ -50,7 +50,7 @@ calculateDisplayIndexProgression displayIndex statement =
     Statement.Command name content rawContent ->
       case name of
         "hidden" -> displayIndex
-        _ -> displayIndex - (Statement.numOfLeafCommandDescendents statement)
+        _ -> displayIndex - (Statement.leafCommandCount statement)
     _ -> displayIndex
 
 renderListHead : Statement -> Maybe (List Statement) -> Int -> List (Html Msg)

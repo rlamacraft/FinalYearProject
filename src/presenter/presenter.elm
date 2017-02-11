@@ -8,7 +8,7 @@ import Html.Attributes exposing (id)
 import Html.App as App
 
 import PresenterMessages exposing (Msg(..))
-import Statement exposing (Statement,numOfLeafCommandDescendents,isRenderable)
+import Statement exposing (Statement,leafCommandCount,isRenderableCommand)
 import ParsingHandling exposing (buildStatementTree)
 import Renderer exposing (renderStatements)
 
@@ -37,8 +37,8 @@ init =
 cycleTransition : Model -> Int
 cycleTransition model =
   let
-    renderableStatements = filter Statement.isRenderable model.data
-    numOfCommands = sum ( map Statement.numOfLeafCommandDescendents renderableStatements)
+    renderableStatements = filter Statement.isRenderableCommand model.data
+    numOfCommands = sum ( map Statement.leafCommandCount renderableStatements)
   in
     if model.displayIndex == numOfCommands - 1 then
       0
