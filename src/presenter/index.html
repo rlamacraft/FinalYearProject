@@ -14,9 +14,11 @@
     }
     *[displaying="hidden"], *[displaying="seen"], *[displaying="coming"] {
       opacity: 0.0;
+      pointer-events: none;
     }
     *[displaying="showing"], *[displaying="child-showing"] {
       opacity: 1.0;
+      pointer-events: auto;
     }
   </style>
 </head>
