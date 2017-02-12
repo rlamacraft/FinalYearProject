@@ -20,6 +20,37 @@ pres-paragraph {
 }
 
 
+/* BLOCKQUOTES */
+
+pres-blockquote {
+  --quote-symbol-before: "";
+  --quote-symbol-after: "";
+  --padding: 2em;
+  --border-left: none;
+}
+
+pres-blockquote::before {
+  content: "\f10d";
+  top: var(--position-vertical);
+  left: var(--position-horizontal);
+}
+
+pres-blockquote::after {
+  content: "\f10e";
+  bottom: var(--position-vertical);
+  right: var(--position-horizontal);
+}
+
+pres-blockquote::before, pres-blockquote::after {
+  font: normal normal normal 10vw/1 FontAwesome;
+  transition: var(--transition-animation);
+  opacity: 0.2;
+  position: absolute;
+  --position-vertical: 15vw;
+  --position-horizontal: 6vw;
+}
+
+
 /* LISTS */
 
 pres-itemize {

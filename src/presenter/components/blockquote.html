@@ -1,0 +1,49 @@
+<template id="blockquote_template">
+  <style>
+  :host {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    transition: var(--transition-animation);
+  }
+  :host([displaying="coming"]) h1 {
+    transform: var(--coming-transform);
+  }
+  :host([displaying="seen"]) h1 {
+    transform: var(--seen-transform);
+  }
+  blockquote {
+    color: var(--font-color, #1a1a1a);
+    font-family: var(--font-family,"roboto", sans-serif);
+    font-weight: var(--font-weight, 300);
+    font-size: var(--font-size, 6vh);
+    transition: var(--transition-animation);
+    border-left: var(--border-left, 5px solid #5f5f5f);
+    padding: var(--padding, initial);
+    font-style: italic;
+    border-radius: var(--border-radius, initial);
+    box-shadow: var(--box-shadow, initial);
+    background-color: var(--background-color, initial);
+  }
+  blockquote::before {
+    content: var(--quote-symbol-before, '"');
+  }
+  blockquote::after {
+    content: var(--quote-symbol-after, '"');
+  }
+  </style>
+  <div>
+    <blockquote>
+      <slot name="content_0"></slot>
+    </blockquote>
+  </div>
+</template>
+
+<script>
+  RegisterComponent("blockquote", {});
+</script>
