@@ -1,11 +1,16 @@
 \hidden{
-  \import{title,stylesheet,paragraph,itemize,anim-li,youtube}
+  \import{title,stylesheet,paragraph,itemize,anim-li,youtube,googlemaps}
   \stylesheet{themes/materialDesignInspired.css}
 }
 
 \title{What is Material Design?}
 
 \youtube{Q8TXgCzxEnw}
+
+\googlemaps{
+  AIzaSyA89aABSRwJcfMWMOnDC97Xwlu2USTGbFI
+  The+Strand,+London+UK
+}
 
 \paragraph{Material Design is a design language developed in 2014 by Google. Expanding upon the "card" motifs that debuted in Google Now, Material Design makes more liberal use of grid-based layouts, responsive animations and transitions, padding, and depth effects such as lighting and shadows.}
 
