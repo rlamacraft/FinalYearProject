@@ -33,15 +33,17 @@ wrapAndAppendNewNodes = (newNodes, container) => {
   const notLiComponents = ["PRES-ITEMIZE", "PRES-ENUMERATE", "PRES-ANIM-LI", "PRES-HIDDEN"];
 
   Array.from(newNodes).forEach((eachNewNode) => {
-    const newSlot = document.createElement("slot");
-    newSlot.setAttribute("name", eachNewNode.attributes.slot.value);
-    let contentContainer = newSlot;
-    if(!notLiComponents.includes(eachNewNode.childNodes[0].tagName)) {
-      const newLi = document.createElement("li");
-      newLi.appendChild(newSlot);
-      contentContainer = newLi;
+    if(eachNewNode.getAttribute("slot") !== "content_raw") {
+      const newSlot = document.createElement("slot");
+      newSlot.setAttribute("name", eachNewNode.attributes.slot.value);
+      let contentContainer = newSlot;
+      if(!notLiComponents.includes(eachNewNode.childNodes[0].tagName)) {
+        const newLi = document.createElement("li");
+        newLi.appendChild(newSlot);
+        contentContainer = newLi;
+      }
+      container.appendChild(contentContainer);
     }
-    container.appendChild(contentContainer);
   });
 };
 

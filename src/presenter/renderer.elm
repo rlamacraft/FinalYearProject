@@ -42,7 +42,15 @@ renderSingleStatement displayIndex statement =
       Statement.Command name content rawContent ->
         node ("pres-" ++ name)
           [ attribute "displaying" displaying ]
-          <| wrapInContentSpans (renderStatements content displayIndex) 0
+          <| renderedCommandSlots content displayIndex rawContent
+
+renderedCommandSlots : List Statement -> Int -> String -> List (Html Msg)
+renderedCommandSlots content displayIndex rawContent =
+  let
+    contentSlots = wrapInContentSpans (renderStatements content displayIndex) 0
+    rawContentSlot = span [attribute "slot" "content_raw"] [text rawContent]
+  in
+    rawContentSlot :: contentSlots
 
 calculateDisplayIndexProgression : Int -> Statement -> Int
 calculateDisplayIndexProgression displayIndex statement =

@@ -21,6 +21,7 @@
 
 <script>
   var player;
+  var videoID;
 
   buildPlayer = (newNodes, component) => {
 
@@ -28,10 +29,15 @@
     const libraryContainer = component.shadowRoot.getElementById("libraryContainer");
     const newNodesAsArray = Array.from(newNodes);
 
-    if(newNodesAsArray.length > 0 && playerContainer.getAttribute("loading") == "false") {
+    newNodesAsArray.forEach((eachNewNode) => {
+      if(eachNewNode.getAttribute("slot") === "content_0") {
+        videoID = eachNewNode.childNodes[0].innerHTML;
+      }
+    });
+
+    if(playerContainer.getAttribute("loading") == "false") {
       playerContainer.setAttribute("loading", "true");
 
-      const videoID = Array.from(newNodes)[0].childNodes[0].innerHTML;
       const onYouTubeIframeAPIReady = () => {
         // wait until library is loaded, then create player
         const loop = setInterval(() => {

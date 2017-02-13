@@ -40,7 +40,8 @@ renderSingleCommand =
     stringStatementContent = Statement.StringStatement stringContent
     stringStatementContentHtml =  Html.span [] [text stringContent]
     command = Statement.Command commandName [ stringStatementContent ] stringContent
-    commandHtml state = Html.node ("pres-" ++ commandName) [ attribute "displaying" state ] [ Html.span [ attribute "slot" "content_0" ] [ stringStatementContentHtml ] ]
+    rawContentSlot = Html.span [attribute "slot" "content_raw"] []
+    commandHtml state = Html.node ("pres-" ++ commandName) [ attribute "displaying" state ] [ rawContentSlot, Html.span [ attribute "slot" "content_0" ] [ stringStatementContentHtml ] ]
   in
     describe "Rendering Single Command Tests"
       [ test "Command - Currently Showing" <|
@@ -63,13 +64,14 @@ renderDisplayingParent =
     stringContent = "foo"
     childName = "child"
     parentName = "parent"
+    rawContentSlot = Html.span [attribute "slot" "content_raw"] []
     slotTemplate slotIndex children = Html.span [ attribute "slot" ("content_" ++ toString slotIndex) ] children
     stringContentStatement = Statement.StringStatement stringContent
     child = Statement.Command childName [stringContentStatement] stringContent
     parentContent = "\\" ++ childName ++ "{" ++ stringContent ++ "}"
     parent = Statement.Command parentName [child] parentContent
     stringContentHtml = slotTemplate 0 <| [ Html.span [] [ text stringContent ] ]
-    htmlTemplate name state children = Html.node ("pres-" ++ name) [ attribute "displaying" state ] children
+    htmlTemplate name state children = Html.node ("pres-" ++ name) [ attribute "displaying" state ] (rawContentSlot :: children)
     childHtmlTemplate state slotIndex = htmlTemplate childName state [ stringContentHtml ]
     childHtml = childHtmlTemplate "showing" 0
     parentHtmlTemplate children = htmlTemplate parentName "child-showing" children
