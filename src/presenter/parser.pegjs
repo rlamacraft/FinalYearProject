@@ -36,7 +36,7 @@ command
   = "\\" name:identifier "{" newLines? content:(statement*) newLines? ind:indentation "}" { return generateParsedStatement(name, content, getRaw(content)) }
 
 stringStatement
-  = value:generalString returns:newLines { return generateParsedStatement("_string", [], value + returns) }
+  = "|" value:generalString returns:newLines { return generateParsedStatement("_string", [], value + returns) } / value:generalString returns:newLines { return generateParsedStatement("_string", [], value + returns) }
 
 identifier /* identifiers beginning with an underscore are private */
   = chars:[a-z\-]+ { return chars.join("") }
