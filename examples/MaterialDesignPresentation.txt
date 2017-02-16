@@ -3,13 +3,21 @@
   \stylesheet{themes/materialDesignInspired.css}
 
   complex components imported with associated resources
-  \import{youtube,googlemaps,blockquote,pre}
+  \import{youtube,googlemaps,blockquote,pre,katex}
   \stylesheet{themes/font-awesome-4.7.0/css/font-awesome.css}
 }
 
 \title{What is Material Design?}
 
 \blockquote{There are three responses to a piece of design – yes, no, and WOW! Wow is the one to aim for.}
+
+\pre{
+  |this
+  |  is
+  |   some
+  |       indented
+  |            text
+}
 
 \youtube{Q8TXgCzxEnw}
 
@@ -18,18 +26,14 @@
   The+Strand,+London+UK
 }
 
+\katex{
+ | x = \frac{{ - b \pm \sqrt {b^2 - 4ac} }}{{2a}}
+}
+
 \paragraph{Material Design is a design language developed in 2014 by Google. Expanding upon the "card" motifs that debuted in Google Now, Material Design makes more liberal use of grid-based layouts, responsive animations and transitions, padding, and depth effects such as lighting and shadows.}
 
 \itemize{
   \anim-li{Material is the metaphor.}
   \anim-li{Bold, graphic, intentional.}
   \anim-li{Motion provides meaning.}
-}
-
-\pre{
-  |this
-  |  is
-  |   some
-  |       preformatted
-  |                text
 }

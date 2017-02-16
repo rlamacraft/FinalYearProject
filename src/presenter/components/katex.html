@@ -1,0 +1,64 @@
+<template id="katex_template">
+  <link rel="stylesheet" href="components/katex/katex.css">
+  <style>
+  :host {
+    position: absolute;
+    top: 10vh;
+    left: 0;
+    right: 0;
+    transition: var(--transition-animation);
+  }
+  #container {
+    font-size: 10vw;
+  }
+  </style>
+  <div id="container" loading="false"></div>
+</template>
+
+<script>
+  var text;
+
+  prepareContainer = (newNodes, container) => {
+
+    Array.from(newNodes).forEach((eachNewNode) => {
+      if(eachNewNode.getAttribute("slot") === "content_0") {
+        text = eachNewNode.childNodes[0].innerHTML;
+        console.log(text);
+      }
+    });
+
+    if(container.getAttribute("loading") == "false") {
+      container.setAttribute("loading", "true");
+
+      const render = () => {
+        const loop = setInterval(() => {
+          if(typeof(katex.render) === "function") {
+            clearInterval(loop);
+            try {
+              katex.render(text, container, {
+                displayMode: true
+              });
+            } catch(ParseError) {
+              container.innerHTML = "Could not parse. Check KaTeX component.";
+            }
+          }
+        }, 100);
+      }
+
+      // load library
+      const libraryScript = document.createElement('script');
+      libraryScript.src = "components/katex/katex.js";
+      libraryScript.onload = render;
+      container.parentNode.insertBefore(libraryScript, container);
+    }
+  };
+
+  RegisterComponent("katex", {
+    onStart: (component) => {
+      prepareContainer(component.childNodes, component.shadowRoot.getElementById("container"));
+    },
+    onContentChange: (mutation) => {
+      prepareContainer(mutation.addedNodes, mutation.target.shadowRoot.getElementById("container"));
+    }
+  });
+</script>
