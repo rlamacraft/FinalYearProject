@@ -5,6 +5,9 @@
 * as well as provide a getter for the template.
 */
 const RegisterComponent = function(commandName, functions) {
+  if(typeof(functions) === "undefined")
+    functions = {};
+
   const setMutationObserver = function(target) {
     // create an observer instance
     this.observer = new MutationObserver(function(mutations) {
