@@ -1,5 +1,6 @@
 \hidden{
   \import{title,itemize,enumerate}
+  \import{code-java}
 }
 
 \title{Example Title}
@@ -16,4 +17,12 @@
   first thing
   second thing
   third thing
+}
+
+\code-java{
+|class HelloWorld {
+|  public static void main(String args[]) {
+|    System.out.println("Hello World!");
+|  }
+|}
 }

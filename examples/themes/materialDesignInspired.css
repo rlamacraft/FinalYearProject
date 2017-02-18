@@ -4,6 +4,7 @@
   --border-radius: .05vw;
   --box-shadow: 0 0.12vw 0.12vw 0 rgba(0, 0, 0, 0.14), 0 0.18vw 0.06vw -0.12vw rgba(0, 0, 0, 0.2), 0 0.06vw 0.3vw 0 rgba(0, 0, 0, 0.12);
   --transition-animation: all 1s cubic-bezier(.4, 0, .2, 1);
+  --font-family-monospace: "Roboto Mono";
 }
 
 #background {
@@ -17,6 +18,10 @@ pres-title {
 pres-paragraph {
   --coming-transform: translateY(-100vh);
   --seen-transform: translateY(100vh);
+}
+
+pres-code-java {
+  --padding: 1vw 5vw;
 }
 
 
