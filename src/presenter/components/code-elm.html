@@ -1,5 +1,5 @@
-<template id="code-java_template">
-  <link rel="stylesheet" href="components/code/code-java/prism.css">
+<template id="code-elm_template">
+  <link rel="stylesheet" href="components/code/code-elm/atom-one-light.css">
   <style>
   :host {
     position: absolute;
@@ -25,18 +25,10 @@
     border-radius: var(--border-radius);
     transition: var(--transition-animation);
     font-size: 0.7em;
-  }
-  span.line-numbers-rows {
-    left: -4em !important;
-    border: 0 !important;
-    line-height: 4.5vw !important;
-    top: -0.3em !important;
-    opacity: var(--line-numbers-opacity, 1.0);
+    background-color: transparent !important;
   }
   </style>
-  <pre class="line-numbers">
-    <code id="container" class="language-java" loading="false"></code>
-  </pre>
+  <pre><code id="container" class="language-elm nohighlight" loading="false"></code></pre>
 </template>
 
 <script>
@@ -44,24 +36,27 @@
 
     Array.from(newNodes).forEach((eachNewNode) => {
       if(eachNewNode.getAttribute("slot") == "content_raw") {
-        container.innerHTML = "\n" + eachNewNode.innerHTML.substring(0, eachNewNode.innerHTML.length - 1);
+        container.innerHTML = eachNewNode.innerHTML.substring(0, eachNewNode.innerHTML.length - 1);
 
         if(container.getAttribute("loading") == "false") {
           container.setAttribute("loading", "true");
 
           const render = () => {
             const loop = setInterval(() => {
-              if(typeof(Prism.highlightElement) === "function") {
-                clearInterval(loop);
-                Prism.highlightElement(container);
+              try {
+                if(typeof(hljs.highlightBlock) === "function") {
+                  clearInterval(loop);
+                  hljs.highlightBlock(container);
+                }
+              } catch(_) {
+                //nothing
               }
             }, 100);
           }
 
           // load library
           const libraryScript = document.createElement('script');
-          libraryScript.src = "components/code/code-java/prism.js";
-          libraryScript.setAttribute("data-manual", true);
+          libraryScript.src = "components/code/code-elm/highlight.pack.js";
           libraryScript.onload = render;
           container.parentNode.insertBefore(libraryScript, container);
         }
@@ -70,7 +65,7 @@
     });
   }
 
-  RegisterComponent("code-java", {
+  RegisterComponent("code-elm", {
     onStart: (component) => {
       prepareContainer(component.childNodes, component.shadowRoot.getElementById("container"));
     },
