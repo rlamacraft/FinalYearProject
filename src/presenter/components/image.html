@@ -1,0 +1,51 @@
+<template id="image_template">
+  <style>
+  :host {
+    background-color: var(--background-color,transparent);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: var(--transition-animation);
+    padding: 1em;
+  }
+  #imageContainer {
+    height: 100%;
+    display: flex;
+  }
+  img {
+    box-shadow: var(--box-shadow, initial);
+    border-radius: var(--border-radius, initial);
+    display: block;
+    margin: auto;
+  }
+  </style>
+  <div id="imageContainer" image-showing="false"></div>
+</template>
+
+<script>
+  var player;
+
+  getImage = (newNodes, component) => {
+
+    const imageContainer = component.shadowRoot.getElementById("imageContainer");
+    const currentDirectory = document.getElementById("currentDirectory").getAttribute("data-directory");
+
+    if(imageContainer.getAttribute("image-showing") == "false" && component.querySelector('span[slot="content_0"]') !== "undefined") {
+      imageContainer.setAttribute("image-showing", "true");
+
+      const src = component.querySelector('span[slot="content_0"]').childNodes[0].innerText;
+
+      const image = document.createElement('img');
+      image.src = currentDirectory + "/" + src;
+      imageContainer.appendChild(image);
+    }
+  };
+
+  RegisterComponent("image", {
+    onStart: (component) => {
+      getImage(component.childNodes, component);
+    }
+  });
+</script>

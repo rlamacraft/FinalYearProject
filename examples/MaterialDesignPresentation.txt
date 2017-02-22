@@ -3,7 +3,7 @@
   \stylesheet{themes/materialDesignInspired.css}
 
   complex components imported with associated resources
-  \import{youtube,googlemaps,blockquote,pre,katex,code-java}
+  \import{youtube,googlemaps,blockquote,pre,katex,code-java,image}
   \stylesheet{themes/font-awesome-4.7.0/css/font-awesome.css}
 }
 
@@ -18,6 +18,8 @@
   |       indented
   |            text
 }
+
+\image{resources/cartoon_image.jpg}
 
 \youtube{Q8TXgCzxEnw}
 
