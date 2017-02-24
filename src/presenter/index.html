@@ -5,19 +5,25 @@
   <title>Presenter Window</title>
 
   <style>
-    #container > div {
+    #background {
       top: 0;
       bottom: 0;
       position: absolute;
       left: 0;
       right: 0;
+      background-color: #f5f5f5;
+      overflow: hidden;
     }
     *[displaying="hidden"], *[displaying="seen"], *[displaying="coming"] {
       opacity: 0.0;
-      pointer-events: none;
     }
     *[displaying="showing"], *[displaying="child-showing"] {
       opacity: 1.0;
+    }
+    *[displaying="hidden"], *[displaying="seen"], *[displaying="coming"], *[displaying="child-showing"] {
+      pointer-events: none;
+    }
+    *[displaying="showing"] {
       pointer-events: auto;
     }
   </style>

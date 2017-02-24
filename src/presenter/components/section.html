@@ -1,0 +1,84 @@
+<template id="section_template">
+  <style>
+  :host {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: transparent;
+    transition: var(--transition-animation);
+  }
+  h2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    color: var(--header-font-color, #1a1a1a);
+    font-family: var(--header-font-family,"roboto", sans-serif);
+    font-weight: var(--header-font-weight, 300);
+    font-size: var(--header-font-size, 5vh);
+    padding: 2vw;
+    margin: 0;
+    padding-top: var(--header-padding-top, 2vh);
+    padding-bottom: var(--header-padding-bottom, 2vh);
+    opacity: 0.0;
+    transition: var(--transition-animation);
+    background-color: var(--header-background-color);
+    box-shadow: var(--box-shadow);
+  }
+  #contentContainer {
+    position: absolute;
+    top: 10vh;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  #titleContainer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+  }
+  :host([displaying="child-showing"]) h2 {
+    opacity: 1.0;
+    transition-delay: var(--transition-duration);
+  }
+  </style>
+  <div id="titleContainer"></div>
+  <h2 id="header">Section Heading</h2>
+  <div id="contentContainer"></div>
+</template>
+
+<script>
+  section_createSlotsAndExtractTitle = (newNodes, component) => {
+
+    const contentContainer = component.shadowRoot.getElementById("contentContainer");
+    const titleContainer = component.shadowRoot.getElementById("titleContainer");
+    const title = component.shadowRoot.getElementById("header");
+
+    Array.from(newNodes).forEach((eachNewNode) => {
+      if(eachNewNode.getAttribute("slot") !== "content_raw") {
+        const newSlot = document.createElement("slot");
+        newSlot.setAttribute("name", eachNewNode.attributes.slot.value);
+        if(eachNewNode.childNodes[0].tagName === "PRES-TITLE") {
+          title.innerText = eachNewNode.childNodes[0].rawContent;
+          titleContainer.appendChild(newSlot);
+        } else {
+          contentContainer.appendChild(newSlot);
+        }
+      }
+    });
+  };
+
+  RegisterComponent("section", {
+    onStart: (component) => {
+      section_createSlotsAndExtractTitle(component.childNodes, component);
+    },
+    onContentChange: (mutation) => {
+      section_createSlotsAndExtractTitle(mutation.addedNodes, mutation.target);
+    }
+  });
+</script>

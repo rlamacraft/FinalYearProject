@@ -36,6 +36,15 @@ const RegisterComponent = function(commandName, functions) {
         setMutationObserver(this);
       }
     }
+
+    get rawContent() {
+      // check the slot has been rendered correctly
+      if(this.childNodes[0].getAttribute("slot") === "content_raw") {
+        return this.childNodes[0].textContent;
+      } else {
+        return undefined;
+      }
+    }
   });
 }
 

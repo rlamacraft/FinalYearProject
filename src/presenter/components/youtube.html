@@ -9,6 +9,7 @@
     bottom: 0;
     transition: var(--transition-animation);
     padding: 1em;
+    background-color: transparent;
   }
 
   iframe {
@@ -23,7 +24,7 @@
   var player;
   var videoID;
 
-  buildPlayer = (newNodes, component) => {
+  youtube_buildPlayer = (newNodes, component) => {
 
     const playerContainer = component.shadowRoot.getElementById("player");
     const libraryContainer = component.shadowRoot.getElementById("libraryContainer");
@@ -60,7 +61,7 @@
     }
   };
 
-  pauseWhenSeen = () => {
+  youtube_pauseWhenSeen = () => {
     if(typeof(player) !== "undefined") {
       player.pauseVideo();
     }
@@ -68,12 +69,12 @@
 
   RegisterComponent("youtube", {
     onStart: (component) => {
-      buildPlayer(component.childNodes, component);
+      youtube_buildPlayer(component.childNodes, component);
     },
     onContentChange: (mutation) => {
       // if player is no longer showing, pause video
       if(mutation.attributeName === "displaying" && mutation.target.getAttribute("displaying") === "seen") {
-        pauseWhenSeen();
+        youtube_pauseWhenSeen();
       }
     }
   });
