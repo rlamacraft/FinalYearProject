@@ -50,15 +50,23 @@ app.ports.createWindow.subscribe(function() {
 * then request a path from the user. An subsequent saves will be to that new file.
 */
 function saveFile(text) {
-  if(currentFile === "") {
-    dialog.showSaveDialog({}, path => {
-      currentFile = path;
+  let status = `Saved.`;
+  try {
+    if(currentFile === "") {
+      dialog.showSaveDialog({}, path => {
+        currentFile = path;
+        fs.writeFile(currentFile, text);
+      });
+    } else {
       fs.writeFile(currentFile, text);
-    });
-  } else {
-    fs.writeFile(currentFile, text);
+    }
+  } catch(ex) {
+    status = `Failed to Save, Sorry.`;
   }
-
+  app.ports.savedFile.send(status);
+  setTimeout(() => {
+    app.ports.hideSavedToast.send(null);
+  }, 5000);
 }
 
 app.ports.writeToFile.subscribe(function(text) {
