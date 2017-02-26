@@ -11,11 +11,19 @@ ipcRenderer.on("show-pres", (event, message) => {
     const currentFile = message.currentFile;
     const indexOfFileName = currentFile.lastIndexOf("/");
     const currentDirectory = currentFile.substring(0,indexOfFileName);
-    document.getElementById("currentDirectory").setAttribute("data-directory",currentDirectory);
+    document.getElementById("currentDirectory").setAttribute("data-directory", currentDirectory);
 
     const parsedData = parser.parse(message.data);
     console.log(parsedData);
     app.ports.parsedData.send(JSON.stringify(parsedData));
+  } catch(ex) {
+    console.error(ex);
+  }
+});
+
+ipcRenderer.on("restart-pres", (event, message) => {
+  try {
+    app.ports.restartPresentation.send(null);
   } catch(ex) {
     console.error(ex);
   }

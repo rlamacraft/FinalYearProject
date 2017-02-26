@@ -50,20 +50,29 @@ update msg model =
   case msg of
     Received newData ->
       case buildStatementTree newData of
+        Ok newData ->
+          ( { model | data = newData }, Cmd.none )
         Err msg ->
           ( model, Cmd.none )
-        Ok newData ->
-          ( { model | data = newData, displayIndex = 0}, Cmd.none )
+    Restart ->
+      ( { model | displayIndex = 0 }, Cmd.none )
     ForwardTransition ->
       ( { model | displayIndex = cycleTransition model}, Cmd.none )
 
 
 -- PORTS
-port parsedData : (String -> msg) -> Sub msg
+port parsedData           : (String -> msg) -> Sub msg  -- re-parse and render the presentation with new model
+port restartPresentation  : (() -> msg) -> Sub msg      -- render the presentation with display index 0, i.e. from beginning 
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-  parsedData Received
+  let
+    restartPres () = Restart
+  in
+    Sub.batch
+      [ parsedData Received
+      , restartPresentation restartPres
+      ]
 
 
 -- VIEW

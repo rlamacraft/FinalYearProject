@@ -109,6 +109,10 @@ function setApplicationMenu() {
           click: _ => { BrowserWindow.getFocusedWindow().webContents.send("present"); }
         },
         {
+          label: "Restart Presentation",
+          click: _ => { BrowserWindow.getFocusedWindow().webContents.send("restart-pres"); }
+        },
+        {
           label: "Dev Tools",
           accelerator: "Command+Alt+J",
           click: _ => { BrowserWindow.getFocusedWindow().webContents.openDevTools(); }
