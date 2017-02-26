@@ -1,0 +1,76 @@
+<template id="code-elm_template">
+  <link rel="stylesheet" href="components/code/code-elm/atom-one-light.css">
+  <style>
+  :host {
+    position: absolute;
+    top: 2vh;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: var(--transition-animation);
+  }
+  pre {
+    background-color: var(--background-color) !important;
+    box-shadow: var(--box-shadow);
+    padding: var(--padding,1vw) !important;
+    margin: 8vw !important;
+    padding-bottom: 1vw !important;
+    font-size: var(--font-size, 3vw);
+    overflow: visible !important;
+    padding-left: 0.5em !important;
+  }
+  code {
+    font-family: var(--font-family-monospace, "Courier", monospace) !important;
+    font-weight: var(--font-weight, 300);
+    border-radius: var(--border-radius);
+    transition: var(--transition-animation);
+    font-size: 0.7em;
+    background-color: transparent !important;
+  }
+  </style>
+  <pre><code id="container" class="language-elm nohighlight" loading="false"></code></pre>
+</template>
+
+<script>
+  const prepareContainer = (newNodes, container) => {
+
+    Array.from(newNodes).forEach((eachNewNode) => {
+      if(eachNewNode.getAttribute("slot") == "content_raw") {
+        container.innerHTML = eachNewNode.innerHTML.substring(0, eachNewNode.innerHTML.length - 1);
+
+        if(container.getAttribute("loading") == "false") {
+          container.setAttribute("loading", "true");
+
+          const render = () => {
+            const loop = setInterval(() => {
+              try {
+                if(typeof(hljs.highlightBlock) === "function") {
+                  clearInterval(loop);
+                  hljs.highlightBlock(container);
+                }
+              } catch(_) {
+                //nothing
+              }
+            }, 100);
+          }
+
+          // load library
+          const libraryScript = document.createElement('script');
+          libraryScript.src = "components/code/code-elm/highlight.pack.js";
+          libraryScript.onload = render;
+          container.parentNode.insertBefore(libraryScript, container);
+        }
+      }
+
+    });
+  }
+
+  RegisterComponent("code-elm", {
+    onStart: (component) => {
+      prepareContainer(component.childNodes, component.shadowRoot.getElementById("container"));
+    },
+    onContentChange: (mutation) => {
+      prepareContainer(mutation.addedNodes, mutation.target.shadowRoot.getElementById("container"));
+    }
+  });
+</script>

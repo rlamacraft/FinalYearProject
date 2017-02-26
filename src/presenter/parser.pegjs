@@ -30,16 +30,22 @@ start
   = statement*
 
 statement
-  = ind:indentation thing:command newLines {return thing} / ind:indentation thing:stringStatement {return thing}
+  =  ind:indentation thing:escapedStringStatement {return thing} / ind:indentation thing:command newLines {return thing} / ind:indentation thing:stringStatement {return thing}
 
 command
   = "\\" name:identifier "{" newLines? content:(statement*) newLines? ind:indentation "}" { return generateParsedStatement(name, content, getRaw(content)) }
 
 stringStatement
-  = value:generalString returns:newLines { return generateParsedStatement("_string", [], value + returns) }
+  =  value:generalString returns:newLines { return generateParsedStatement("_string", [], value + returns ) }
+
+escapedStringStatement
+  = "\|" value:escapedString "\n" { return generateParsedStatement("_string", [], value + "\n" ) }
 
 identifier /* identifiers beginning with an underscore are private */
   = chars:[a-z\-]+ { return chars.join("") }
+
+escapedString
+  = chars:[^\|\n]+ { return chars.join("") }
 
 generalString
   = chars:[^\\{}\n]+ { return chars.join("") }

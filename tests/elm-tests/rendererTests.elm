@@ -38,9 +38,10 @@ renderSingleCommand =
     stringContent = "foo"
     commandName = "command"
     stringStatementContent = Statement.StringStatement stringContent
-    stringStatementContentHtml =  Html.span [] [text stringContent]
+    stringStatementContentHtml =  Html.span [ attribute "slot" "content_0" ] [ Html.span [] [text stringContent] ]
+    stringStatementRawContentHtml = Html.span [ attribute "slot" "content_raw" ] [ text stringContent ]
     command = Statement.Command commandName [ stringStatementContent ] stringContent
-    commandHtml state = Html.node ("pres-" ++ commandName) [ attribute "displaying" state ] [ Html.span [ attribute "slot" "content_0" ] [ stringStatementContentHtml ] ]
+    commandHtml state = Html.node ("pres-" ++ commandName) [ attribute "displaying" state ] [ stringStatementRawContentHtml, stringStatementContentHtml ]
   in
     describe "Rendering Single Command Tests"
       [ test "Command - Currently Showing" <|
@@ -60,23 +61,32 @@ renderSingleCommand =
 renderDisplayingParent : Test
 renderDisplayingParent =
   let
-    stringContent = "foo"
-    childName = "child"
-    parentName = "parent"
+    -- statements
+    stringContent           = "foo"
+    stringContentStatement  = Statement.StringStatement stringContent
+    childName               = "child"
+    child                   = Statement.Command childName [stringContentStatement] stringContent
+    parentName              = "parent"
+    singleParentRawContent  = "\\" ++ childName ++ "{" ++ stringContent ++ "}"
+    twoParentRawContent     = singleParentRawContent ++ singleParentRawContent
+    parent                  = Statement.Command parentName [child] singleParentRawContent
+
+    -- html generating helpers and templates
     slotTemplate slotIndex children = Html.span [ attribute "slot" ("content_" ++ toString slotIndex) ] children
-    stringContentStatement = Statement.StringStatement stringContent
-    child = Statement.Command childName [stringContentStatement] stringContent
-    parentContent = "\\" ++ childName ++ "{" ++ stringContent ++ "}"
-    parent = Statement.Command parentName [child] parentContent
-    stringContentHtml = slotTemplate 0 <| [ Html.span [] [ text stringContent ] ]
-    htmlTemplate name state children = Html.node ("pres-" ++ name) [ attribute "displaying" state ] children
-    childHtmlTemplate state slotIndex = htmlTemplate childName state [ stringContentHtml ]
-    childHtml = childHtmlTemplate "showing" 0
-    parentHtmlTemplate children = htmlTemplate parentName "child-showing" children
-    parentHtml = parentHtmlTemplate <| [ slotTemplate 0 [ childHtml ] ]
-    multipleChildren = Statement.Command parentName [child, child] (parentContent ++ parentContent)
-    multipleChildrenHtml_0 = parentHtmlTemplate [ slotTemplate 0 <| [ childHtmlTemplate "showing" 0 ], slotTemplate 1 <| [ childHtmlTemplate "coming"  1 ] ]
-    multipleChildrenHtml_1 = parentHtmlTemplate [ slotTemplate 0 <| [ childHtmlTemplate "seen"    0 ], slotTemplate 1 <| [ childHtmlTemplate "showing" 1 ] ]
+    stringContentHtml               = slotTemplate 0 [ Html.span [] [ text stringContent ] ]
+    slotRawTemplate content         = Html.span [ attribute "slot" "content_raw"] [ text content ]
+
+    htmlTemplate name state children  = Html.node ("pres-" ++ name) [ attribute "displaying" state ] children
+    childHtmlTemplate state slotIndex = slotTemplate slotIndex [ htmlTemplate childName state [ slotRawTemplate stringContent, stringContentHtml ] ]
+    parentHtmlTemplate children       = htmlTemplate parentName "child-showing" children
+
+    -- one child
+    parentHtml  = parentHtmlTemplate [ slotRawTemplate singleParentRawContent, childHtmlTemplate "showing" 0 ]
+
+    -- multiple children
+    multipleChildren        = Statement.Command parentName [child, child] twoParentRawContent
+    multipleChildrenHtml_0  = parentHtmlTemplate [ slotRawTemplate twoParentRawContent, childHtmlTemplate "showing" 0, childHtmlTemplate "coming" 1 ]
+    multipleChildrenHtml_1  = parentHtmlTemplate [ slotRawTemplate twoParentRawContent, childHtmlTemplate "seen" 0, childHtmlTemplate "showing" 1 ]
   in
     describe "Rendering Parent Command Tests"
       [ test "Command - One Child Showing" <|

@@ -1,0 +1,81 @@
+<template id="youtube_template">
+  <style>
+  :host {
+    background-color: var(--background-color,black);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: var(--transition-animation);
+    padding: 1em;
+    background-color: transparent;
+  }
+
+  iframe {
+    box-shadow: var(--box-shadow, initial);
+    border-radius: var(--border-radius, initial);
+  }
+  </style>
+  <div id="player" loading="false"></div>
+</template>
+
+<script>
+  var player;
+  var videoID;
+
+  youtube_buildPlayer = (newNodes, component) => {
+
+    const playerContainer = component.shadowRoot.getElementById("player");
+    const libraryContainer = component.shadowRoot.getElementById("libraryContainer");
+    const newNodesAsArray = Array.from(newNodes);
+
+    newNodesAsArray.forEach((eachNewNode) => {
+      if(eachNewNode.getAttribute("slot") === "content_0") {
+        videoID = eachNewNode.childNodes[0].innerHTML;
+      }
+    });
+
+    if(playerContainer.getAttribute("loading") == "false") {
+      playerContainer.setAttribute("loading", "true");
+
+      const onYouTubeIframeAPIReady = () => {
+        // wait until library is loaded, then create player
+        const loop = setInterval(() => {
+          if(typeof(YT) !== "undefined") {
+            clearInterval(loop);
+            player = new YT.Player(playerContainer, {
+              height: '100%',
+              width: '100%',
+              videoId: videoID
+            });
+          }
+        }, 100);
+      }
+
+      // load YouTube API
+      const libraryScript = document.createElement('script');
+      libraryScript.src = "https://www.youtube.com/iframe_api";
+      libraryScript.onload = onYouTubeIframeAPIReady;
+      playerContainer.parentNode.insertBefore(libraryScript, playerContainer);
+    }
+  };
+
+  youtube_pauseWhenSeen = () => {
+    if(typeof(player) !== "undefined") {
+      player.pauseVideo();
+    }
+  }
+
+  RegisterComponent("youtube", {
+    onStart: (component) => {
+      youtube_buildPlayer(component.childNodes, component);
+    },
+    onContentChange: (mutation) => {
+      // if player is no longer showing, pause video
+      if(mutation.attributeName === "displaying" && mutation.target.getAttribute("displaying") === "seen") {
+        youtube_pauseWhenSeen();
+      }
+    }
+  });
+</script>

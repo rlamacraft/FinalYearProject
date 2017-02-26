@@ -1,0 +1,53 @@
+<template id="googlemaps_template">
+  <style>
+  :host {
+    background-color: var(--background-color,transparent);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: var(--transition-animation);
+    padding: 1em;
+    background-color: transparent;
+  }
+  #viewerContainer {
+    height: 100%;
+  }
+  iframe {
+    box-shadow: var(--box-shadow, initial);
+    border-radius: var(--border-radius, initial);
+  }
+  </style>
+  <div id="viewerContainer" loading="false"></div>
+</template>
+
+<script>
+  var player;
+
+  buildViewer = (newNodes, component) => {
+
+    const viewerContainer = component.shadowRoot.getElementById("viewerContainer");
+
+    if(component.childNodes.length == 3 && viewerContainer.getAttribute("loading") == "false") {
+      viewerContainer.setAttribute("loading", "true");
+
+      const key = component.querySelector('span[slot="content_0"]').childNodes[0].innerText;
+      const q = component.querySelector('span[slot="content_1"]').childNodes[0].innerText;
+
+      const viewer = document.createElement('iframe');
+      viewer.width = '100%';
+      viewer.height = '100%';
+      viewer.frameborder = "0";
+      viewer.style = "border:0";
+      viewer.src = `https://www.google.com/maps/embed/v1/place?key=${key}&q=${q}`;
+      viewerContainer.appendChild(viewer);
+    }
+  };
+
+  RegisterComponent("googlemaps", {
+    onStart: (component) => {
+      buildViewer(component.childNodes, component);
+    }
+  });
+</script>

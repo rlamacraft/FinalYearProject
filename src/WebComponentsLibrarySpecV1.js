@@ -5,6 +5,9 @@
 * as well as provide a getter for the template.
 */
 const RegisterComponent = function(commandName, functions) {
+  if(typeof(functions) === "undefined")
+    functions = {};
+
   const setMutationObserver = function(target) {
     // create an observer instance
     this.observer = new MutationObserver(function(mutations) {
@@ -31,6 +34,15 @@ const RegisterComponent = function(commandName, functions) {
       //these are for when the content of the component changes (which includes Elm adding the original content)
       if(typeof(functions.onContentChange) === "function") {
         setMutationObserver(this);
+      }
+    }
+
+    get rawContent() {
+      // check the slot has been rendered correctly
+      if(this.childNodes[0].getAttribute("slot") === "content_raw") {
+        return this.childNodes[0].textContent;
+      } else {
+        return undefined;
       }
     }
   });
