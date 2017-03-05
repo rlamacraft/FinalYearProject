@@ -1,6 +1,9 @@
 port module Presenter exposing (..)
 
-import List exposing(map,sum,length,filter)
+import List exposing (map,sum,length,filter)
+import Char exposing (fromCode)
+import String exposing (fromChar)
+import Keyboard exposing (presses, KeyCode)
 
 import Html exposing (..)
 import Html.Events exposing (onClick)
@@ -34,44 +37,62 @@ init =
 
 -- UPDATE
 
-cycleTransition : Model -> Int
-cycleTransition model =
+cycleTransition : Model -> Int -> Int
+cycleTransition model forwardMovement =
   let
     renderableStatements = filter Statement.isRenderableCommand model.data
     numOfCommands = sum ( map Statement.leafCommandCount renderableStatements)
   in
-    if model.displayIndex == numOfCommands - 1 then
+    if model.displayIndex >= numOfCommands - forwardMovement then
       0
+    else if model.displayIndex + forwardMovement <= 0 then
+      numOfCommands
     else
-      model.displayIndex + 1
+      model.displayIndex + forwardMovement
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
-  case msg of
-    Received newData ->
-      case buildStatementTree newData of
-        Ok newData ->
-          ( { model | data = newData }, Cmd.none )
-        Err msg ->
-          ( model, Cmd.none )
-    Restart ->
-      ( { model | displayIndex = 0 }, Cmd.none )
-    ForwardTransition ->
-      ( { model | displayIndex = cycleTransition model}, Cmd.none )
-
+  let
+    keyCodeToString = String.fromChar << Char.fromCode
+  in
+    case msg of
+      Received newData ->
+        case buildStatementTree newData of
+          Ok newData ->
+            ( { model | data = newData }, Cmd.none )
+          Err msg ->
+            ( model, Cmd.none )
+      Restart ->
+        ( { model | displayIndex = 0 }, Cmd.none )
+      ForwardTransition ->
+        ( { model | displayIndex = cycleTransition model 1 }, Cmd.none )
+      BackwardTransition ->
+        ( { model | displayIndex = cycleTransition model -1 }, Cmd.none )
+      OtherKeyboardPress keycode ->
+        Debug.log ("pressed key: " ++ (keyCodeToString keycode))
+        ( model, Cmd.none )
 
 -- PORTS
 port parsedData           : (String -> msg) -> Sub msg  -- re-parse and render the presentation with new model
-port restartPresentation  : (() -> msg) -> Sub msg      -- render the presentation with display index 0, i.e. from beginning 
+port restartPresentation  : (() -> msg) -> Sub msg      -- render the presentation with display index 0, i.e. from beginning
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
   let
     restartPres () = Restart
+    keyboardPress keycode =
+      case keycode of
+        93 -> ForwardTransition
+        91 -> BackwardTransition
+        32 -> ForwardTransition
+        -- 39 -> OtherKeyboardPress keycode
+        -- 37 -> OtherKeyboardPress keycode
+        _  -> OtherKeyboardPress keycode
   in
     Sub.batch
       [ parsedData Received
       , restartPresentation restartPres
+      , presses keyboardPress
       ]
 
 
