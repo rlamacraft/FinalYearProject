@@ -85,8 +85,6 @@ subscriptions model =
         93 -> ForwardTransition
         91 -> BackwardTransition
         32 -> ForwardTransition
-        -- 39 -> OtherKeyboardPress keycode
-        -- 37 -> OtherKeyboardPress keycode
         _  -> OtherKeyboardPress keycode
   in
     Sub.batch
