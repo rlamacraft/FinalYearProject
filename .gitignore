@@ -2,6 +2,7 @@ elm-stuff/build-artifacts
 src/resources/.sass-cache
 
 src/resources/css/editor.css.map
+src/editor/resources/css/editor.css
 
 src/node_modules
 elm-stuff
@@ -10,3 +11,6 @@ src/.sass-cache
 *.sassc
 
 src/presenter/presenter_elm.js
+src/editor/editor_elm.js
+
+src/presenter/parser.js
