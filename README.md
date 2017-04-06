@@ -6,9 +6,9 @@ The source code of my final year project; a tool for developing Web-based presen
 1.  Get the code
 2.  Run the following
 ```shell
-elm-make src/editor/editor.elm --output src/editor/editor_elm.js
-elm-make src/presenter/presenter.elm --output src/presenter/presenter_elm.js
 cd src
+elm-make editor/editor.elm --output editor/editor_elm.js
+elm-make presenter/presenter.elm --output presenter/presenter_elm.js
 npm install
 cd editor/resources
 mkdir css
