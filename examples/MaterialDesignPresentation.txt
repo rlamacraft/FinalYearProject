@@ -34,8 +34,6 @@
 \section{
   \title{Complex Components}
 
-  \image{resources/cartoon_image.jpg}
-
   \youtube{Q8TXgCzxEnw}
 
   \googlemaps{
