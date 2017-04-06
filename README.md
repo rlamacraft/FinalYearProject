@@ -11,9 +11,9 @@ elm-make src/presenter/presenter.elm --output src/presenter/presenter_elm.js
 cd src
 npm install
 cd editor/resources
+mkdir css
 sass sass/editor.sass > css/editor.css
-cd ../..
-cd presenter
+cd ../../presenter
 pegjs -o parser.js parser.pegjs
 ```
 

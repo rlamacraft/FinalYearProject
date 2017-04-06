@@ -10,6 +10,7 @@
   "license": "ISC",
   "devDependencies": {
     "electron": "^1.5.0",
-    "mocha": "^3.1.2"
+    "mocha": "^3.1.2",
+    "material-design-icons": "^3.0.1"
   }
 }
