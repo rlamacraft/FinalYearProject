@@ -45,11 +45,12 @@ const RegisterComponent = function(commandName, functions) {
         return undefined;
       }
     }
+
+    disconnectedCallback() {
+      this.observer.disconnect()
+    }
   });
 }
-
-// TODO: When component is detached i.e. removed from the DOM, the observer needs to be disconnected
-//    this.observer.disconnect();
 
 /*
 * Sets up the shadow DOM, in the v0 this is done by RegisterComponent
