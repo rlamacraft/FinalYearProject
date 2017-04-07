@@ -58,7 +58,6 @@ const RegisterComponent = function(commandName, functions) {
 */
 function setup(commandName, element) {
   const shadowRoot = element.attachShadow({mode : 'open'});
-  // const template = document.currentScript.ownerDocument.getElementById(`${commandName}_template`);
   const template = document.getElementById(`${commandName}_import`).import.getElementById(`${commandName}_template`);
   shadowRoot.appendChild(template.content.cloneNode(true));
 }
