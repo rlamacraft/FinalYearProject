@@ -4,7 +4,6 @@
 
   complex components imported with associated resources
   \import{youtube,googlemaps,blockquote,pre,katex,code-java,image,section}
-  \stylesheet{themes/font-awesome-4.7.0/css/font-awesome.css}
 }
 
 \section{
